@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FE444EC8-E80C-451C-9904-A2059BC349A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.SharePoint.IdentityModel", "src\THNETII.SharePoint.IdentityModel\THNETII.SharePoint.IdentityModel.csproj", "{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,5 +33,22 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53C9A738-B259-4812-BEEC-1F362838E0EC}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Debug|x64.Build.0 = Debug|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Debug|x86.Build.0 = Debug|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Release|x64.ActiveCfg = Release|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Release|x64.Build.0 = Release|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB} = {FE444EC8-E80C-451C-9904-A2059BC349A1}
 	EndGlobalSection
 EndGlobal
