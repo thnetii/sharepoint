@@ -3,7 +3,21 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netcoreapp3.1;netstandard2.0</TargetFrameworks>
     <TargetFrameworks Condition="$([System.Runtime.InteropServices.RuntimeInformation]::ISOsPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))"
-      >$(TargetFrameworks);net461</TargetFrameworks>
+                      >$(TargetFrameworks);net461</TargetFrameworks>
   </PropertyGroup>
+
+  <PropertyGroup Condition="
+    ( $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETStandard'  AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= '2.1') OR
+    ( $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETCoreApp'   AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= '3.0')
+                 ">
+    <DefineConstants>$(DefineConstants);CSHARP_LANG_FEATURE_RANGE_INDEX</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.Protocols" Version="6.7.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.7.1">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
 
 </Project>

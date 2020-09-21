@@ -59,11 +59,9 @@
           DependsOnTargets="InitializeSourceControlInformation"
           BeforeTargets="_GetPackageFiles;GenerateNuspec"
           >
-    <!--<CreateProperty Value="@(SourceRoot->Concat)\LICENSE">
-      <Output PropertyName="_SourceRootLicenseFilePath" TaskParameter="Value"/>
-    </CreateProperty>-->
     <PropertyGroup>
-      <_SourceRootLicenseFilePath>%(SourceRoot.Identity)LICENSE</_SourceRootLicenseFilePath>
+      <_SourceRootLicenseFilePath Condition=" '%(SourceRoot.SourceControl)' != '' "
+        >%(SourceRoot.Identity)LICENSE</_SourceRootLicenseFilePath>
     </PropertyGroup>
     <PropertyGroup Condition="Exists('$(_SourceRootLicenseFilePath)')">
       <PackageLicenseFile>LICENSE</PackageLicenseFile>
