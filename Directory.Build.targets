@@ -57,7 +57,7 @@
 
   <Target Name="AddSourceRootLicenseFileToNugetPackageOutput"
           DependsOnTargets="InitializeSourceControlInformation"
-          BeforeTargets="GenerateNuspec"
+          BeforeTargets="_GetPackageFiles;GenerateNuspec"
           >
     <!--<CreateProperty Value="@(SourceRoot->Concat)\LICENSE">
       <Output PropertyName="_SourceRootLicenseFilePath" TaskParameter="Value"/>
