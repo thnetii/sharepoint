@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		.gitmodules = .gitmodules
 		.github\dependabot.yml = .github\dependabot.yml
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
@@ -17,7 +18,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FE444EC8-E80C-451C-9904-A2059BC349A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.SharePoint.IdentityModel", "src\THNETII.SharePoint.IdentityModel\THNETII.SharePoint.IdentityModel.csproj", "{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.SharePoint.IdentityModel", "src\THNETII.SharePoint.IdentityModel\THNETII.SharePoint.IdentityModel.csproj", "{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{7520E12A-CB43-4405-863F-B8ED8A346B98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.SharePoint.ShowCurrentUserConsole", "sample\THNETII.SharePoint.ShowCurrentUserConsole\THNETII.SharePoint.ShowCurrentUserConsole.csproj", "{334F6180-3C22-498A-852D-FCBEA2AE8E70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,12 +32,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {53C9A738-B259-4812-BEEC-1F362838E0EC}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -47,8 +46,27 @@ Global
 		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Release|x64.Build.0 = Release|Any CPU
 		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Release|x86.ActiveCfg = Release|Any CPU
 		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB}.Release|x86.Build.0 = Release|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Debug|x64.Build.0 = Debug|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Debug|x86.Build.0 = Debug|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Release|x64.ActiveCfg = Release|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Release|x64.Build.0 = Release|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Release|x86.ActiveCfg = Release|Any CPU
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB} = {FE444EC8-E80C-451C-9904-A2059BC349A1}
+		{334F6180-3C22-498A-852D-FCBEA2AE8E70} = {7520E12A-CB43-4405-863F-B8ED8A346B98}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53C9A738-B259-4812-BEEC-1F362838E0EC}
 	EndGlobalSection
 EndGlobal
