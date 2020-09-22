@@ -24,6 +24,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{7520E1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.SharePoint.ShowCurrentUserConsole", "sample\THNETII.SharePoint.ShowCurrentUserConsole\THNETII.SharePoint.ShowCurrentUserConsole.csproj", "{334F6180-3C22-498A-852D-FCBEA2AE8E70}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "msal-extensions", "msal-extensions", "{4F72DB8C-B6B3-4AFB-9E24-AA73D49B1470}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{77F3F40F-DFF6-4D14-9E17-9AD8B19E5594}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.MsalExtensions.Hosting", "msal-extensions\src\THNETII.MsalExtensions.Hosting\THNETII.MsalExtensions.Hosting.csproj", "{19FB6CC4-2109-4217-80FC-A25970FB6536}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +64,18 @@ Global
 		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Release|x64.Build.0 = Release|Any CPU
 		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Release|x86.ActiveCfg = Release|Any CPU
 		{334F6180-3C22-498A-852D-FCBEA2AE8E70}.Release|x86.Build.0 = Release|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Debug|x64.Build.0 = Debug|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Debug|x86.Build.0 = Debug|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Release|x64.ActiveCfg = Release|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Release|x64.Build.0 = Release|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Release|x86.ActiveCfg = Release|Any CPU
+		{19FB6CC4-2109-4217-80FC-A25970FB6536}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +83,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C01C51F8-75BC-4E2B-AC80-F8F7FB2609DB} = {FE444EC8-E80C-451C-9904-A2059BC349A1}
 		{334F6180-3C22-498A-852D-FCBEA2AE8E70} = {7520E12A-CB43-4405-863F-B8ED8A346B98}
+		{77F3F40F-DFF6-4D14-9E17-9AD8B19E5594} = {4F72DB8C-B6B3-4AFB-9E24-AA73D49B1470}
+		{19FB6CC4-2109-4217-80FC-A25970FB6536} = {77F3F40F-DFF6-4D14-9E17-9AD8B19E5594}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53C9A738-B259-4812-BEEC-1F362838E0EC}

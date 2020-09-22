@@ -1,0 +1,3 @@
+[submodule "msal-extensions"]
+	path = msal-extensions
+	url = https://github.com/thnetii/msal-extensions.git
