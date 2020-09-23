@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.CommandLine.Binding;
 using System.CommandLine.Hosting;
-using System.Globalization;
+using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,26 +29,25 @@ namespace THNETII.SharePoint.ShowCurrentUserConsole
 
             var pca = serviceProvider.GetRequiredService<IPublicClientApplication>();
 
+            AuthenticationResult? authResult;
+            IEnumerable<string> scopes = Array.Empty<string>();
             var flow = pca
-                .AcquireTokenWithDeviceCode(Array.Empty<string>(),
-                deviceCodeResult =>
+                .AcquireTokenWithDeviceCode(scopes, dcr =>
                 {
-                    var logger = serviceProvider.GetRequiredService<ILogger<DeviceCodeResult>>();
-                    using var loggerScope = logger.BeginScope(new Dictionary<string, string>
-                    {
-                        [nameof(deviceCodeResult.ClientId)] = deviceCodeResult.ClientId,
-                        [nameof(deviceCodeResult.DeviceCode)] = deviceCodeResult.DeviceCode,
-                        [nameof(deviceCodeResult.ExpiresOn)] = deviceCodeResult.ExpiresOn.ToString(CultureInfo.InvariantCulture),
-                        [nameof(deviceCodeResult.Interval)] = deviceCodeResult.Interval.ToString(CultureInfo.InvariantCulture),
-                        [nameof(deviceCodeResult.Scopes)] = string.Join(" ", deviceCodeResult.Scopes),
-                        [nameof(deviceCodeResult.UserCode)] = deviceCodeResult.UserCode,
-                        [nameof(deviceCodeResult.VerificationUrl)] = deviceCodeResult.VerificationUrl,
-                    });
-                    logger.LogInformation(deviceCodeResult.Message);
+                    var logger = serviceProvider.GetRequiredService<ILoggerFactory>()
+                        .CreateLogger($"{typeof(DeviceCodeResult).Namespace}.{nameof(dcr.DeviceCode)}");
+                    using var s_scps = BeginScope(logger, string.Join(" ", dcr.Scopes), nameof(dcr.Scopes));
+                    using var s_usrc = BeginScope(logger, dcr.UserCode, nameof(dcr.UserCode));
+                    using var s_vurl = BeginScope(logger, dcr.VerificationUrl, nameof(dcr.VerificationUrl));
+                    using var s_expo = BeginScope(logger, dcr.ExpiresOn, nameof(dcr.ExpiresOn));
+                    logger.LogInformation(dcr.Message);
                     return Task.CompletedTask;
+
+                    static IDisposable BeginScope(ILogger logger, object value,
+                        string name) =>
+                        logger.BeginScope($"{name}: {{{name}}}", value);
                 });
 
-            AuthenticationResult authResult;
             try
             {
                 authResult = await flow.ExecuteAsync(cancelToken)
@@ -76,7 +76,6 @@ namespace THNETII.SharePoint.ShowCurrentUserConsole
                     var definition = serviceProvider.GetRequiredService<CommandLineDefinition>();
                     var modelBinder = new ModelBinder<PublicClientApplicationOptions>()
                     { EnforceExplicitBinding = true };
-
 
 
                     return modelBinder;
