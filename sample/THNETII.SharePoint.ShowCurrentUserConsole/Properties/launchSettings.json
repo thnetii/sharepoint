@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "THNETII.SharePoint.ShowCurrentUserConsole": {
-      "commandName": "Project",
-      "commandLineArgs": "[config:Environment=Development]"
-    }
-  }
-}
