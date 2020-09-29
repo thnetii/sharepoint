@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -58,8 +58,20 @@ namespace THNETII.SharePoint.IdentityModel
                     HttpCompletionOption.ResponseHeadersRead, cancelToken)
                     .ConfigureAwait(continueOnCapturedContext: false);
                 var wwwAuthenticateHeader = resp.Headers.WwwAuthenticate
-                .FirstOrDefault(bearerSelectorPredicate);
-                return wwwAuthenticateHeader?.Parameter ?? string.Empty;
+                    .FirstOrDefault(bearerSelectorPredicate);
+                string wwwAuthParam = wwwAuthenticateHeader?.Parameter ?? string.Empty;
+                const string separator = ",";
+                var locationHeaderUri = resp.Headers.Location;
+                if (locationHeaderUri?.DnsSafeHost is string domain)
+                {
+                    domain = EscapeWwwAuthParamString(domain);
+                    string prefix = wwwAuthParam.Length > 0
+                        ? separator + SharePointAuthorizationDiscoveryMetadata.DomainKey + "=\""
+                        : SharePointAuthorizationDiscoveryMetadata.DomainKey + "=\"";
+                    const string suffix = "\"";
+                    wwwAuthParam += prefix + domain + suffix;
+                }
+                return wwwAuthParam;
             }
             catch (Exception httpSendException)
             {
@@ -68,6 +80,19 @@ namespace THNETII.SharePoint.IdentityModel
                     httpSendException)
                     );
             }
+        }
+
+        private static string EscapeWwwAuthParamString(string value)
+        {
+            return value.Replace("\\", "\\\\"
+#if NETSTANDARD_API_STRING_REPLACE_STRINGCOMPARISON
+                , StringComparison.Ordinal
+#endif
+                ).Replace("\"", "\\\""
+#if NETSTANDARD_API_STRING_REPLACE_STRINGCOMPARISON
+                , StringComparison.Ordinal
+#endif
+                );
         }
 
         private Uri ValidateAddress(string address)
@@ -79,8 +104,9 @@ namespace THNETII.SharePoint.IdentityModel
             try { uri = new Uri(address); }
             catch (UriFormatException uriFormatExcept)
             {
-                throw LogHelper.LogException<IOException>(uriFormatExcept,
-                    $"");
+                throw LogHelper.LogException<IOException>(
+                    uriFormatExcept,
+                    uriFormatExcept.Message);
             }
 
             if (RequireHttps && !uri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))

@@ -7,6 +7,7 @@ namespace THNETII.SharePoint.IdentityModel
 {
     public class SharePointAuthorizationDiscoveryMetadata
     {
+        public const string DomainKey = "domain";
         public const string RealmKey = "realm";
         public const string ResourcePrincipalKey = "client_id";
         public const string TrustedIssuersKey = "trusted_issuers";
@@ -19,29 +20,27 @@ namespace THNETII.SharePoint.IdentityModel
             var paramsDict = HttpWwwAuthenticateHeaderParameterParser
                 .Parse(wwwAuthenticateParams);
 
-            _ = paramsDict.TryGetValue(RealmKey, out string? realm)
-                && paramsDict.Remove(RealmKey);
-            _ = paramsDict.TryGetValue(ResourcePrincipalKey, out string? clientId)
-                && paramsDict.Remove(ResourcePrincipalKey);
-            _ = paramsDict.TryGetValue(TrustedIssuersKey, out string? trustedIssuers)
-                && paramsDict.Remove(TrustedIssuersKey);
-            _ = paramsDict.TryGetValue(AuthorizationUriKey, out string? authUri)
-                && paramsDict.Remove(AuthorizationUriKey);
-
             var targetInstance = new SharePointAuthorizationDiscoveryMetadata(
                 paramsDict)
             {
-                Realm = realm,
-                ResourcePrincipal = clientId,
-                AuthorizationUri = authUri
+                Domain = PopValue(paramsDict, DomainKey),
+                Realm = PopValue(paramsDict, RealmKey),
+                ResourcePrincipal = PopValue(paramsDict, ResourcePrincipalKey),
+                AuthorizationUri = PopValue(paramsDict, AuthorizationUriKey)
             };
-            if (trustedIssuers?.Split(
-                    commaSeparator, StringSplitOptions.RemoveEmptyEntries
-                ) is string[] trustedIssuersList)
+            if (PopValue(paramsDict, TrustedIssuersKey) is string trustedIssuers)
             {
-                targetInstance.TrustedIssuers.AddRange(trustedIssuersList);
+                targetInstance.TrustedIssuers.AddRange(trustedIssuers.Split(
+                    commaSeparator, StringSplitOptions.RemoveEmptyEntries));
             }
             return targetInstance;
+
+            static string? PopValue(Dictionary<string, string> dict, string key)
+            {
+                _ = dict.TryGetValue(key, out string? value)
+                    && dict.Remove(key);
+                return value;
+            }
         }
 
         private SharePointAuthorizationDiscoveryMetadata(
@@ -53,6 +52,8 @@ namespace THNETII.SharePoint.IdentityModel
 
         [DebuggerStepThrough]
         public SharePointAuthorizationDiscoveryMetadata() : this(null) { }
+
+        public string? Domain { get; set; }
 
         public string? Realm { get; set; }
 
@@ -66,5 +67,19 @@ namespace THNETII.SharePoint.IdentityModel
         public string? AuthorizationUri { get; set; }
 
         public Dictionary<string, string> AdditionalData { get; }
+
+        public string? GetAuthorizationInstance() => AuthorizationUri switch
+        {
+            string authUri => new Uri(authUri).GetLeftPart(UriPartial.Authority),
+            _ => null,
+        };
+
+        public string GetQualifiedClientId(string clientId) => clientId + '@' + Realm;
+
+        public string GetResource() => Domain switch
+        {
+            { Length: int l } when l > 0 => ResourcePrincipal + '/' + Domain + '@' + Realm,
+            _ => ResourcePrincipal + '@' + Realm,
+        };
     }
 }

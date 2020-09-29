@@ -10,7 +10,7 @@
     ( $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETStandard'  AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= '2.1') OR
     ( $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETCoreApp'   AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= '3.0')
                  ">
-    <DefineConstants>$(DefineConstants);CSHARP_LANG_FEATURE_RANGE_INDEX</DefineConstants>
+    <DefineConstants>$(DefineConstants);CSHARP_LANG_FEATURE_RANGE_INDEX;NETSTANDARD_API_STRING_REPLACE_STRINGCOMPARISON</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
