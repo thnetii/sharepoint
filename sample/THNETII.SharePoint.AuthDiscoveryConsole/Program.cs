@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 using THNETII.CommandLine.Hosting;
+using THNETII.SharePoint.IdentityModel;
 
 namespace THNETII.SharePoint.AuthDiscoveryConsole
 {
@@ -44,6 +47,7 @@ namespace THNETII.SharePoint.AuthDiscoveryConsole
                     config.Bind(nameof(SharePoint), opts))
                 .BindCommandLine()
                 ;
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<SharePointAuthorizationDiscoveryOptions>, SharePointAuthorizationDiscoveryPostConfigureOptions>());
         }
     }
 }

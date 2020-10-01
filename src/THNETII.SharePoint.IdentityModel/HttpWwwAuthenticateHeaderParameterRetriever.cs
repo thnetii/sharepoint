@@ -85,11 +85,11 @@ namespace THNETII.SharePoint.IdentityModel
         private static string EscapeWwwAuthParamString(string value)
         {
             return value.Replace("\\", "\\\\"
-#if NETSTANDARD_API_STRING_REPLACE_STRINGCOMPARISON
+#if NETSTANDARD_API_STRING_STRINGCOMPARISON
                 , StringComparison.Ordinal
 #endif
                 ).Replace("\"", "\\\""
-#if NETSTANDARD_API_STRING_REPLACE_STRINGCOMPARISON
+#if NETSTANDARD_API_STRING_STRINGCOMPARISON
                 , StringComparison.Ordinal
 #endif
                 );

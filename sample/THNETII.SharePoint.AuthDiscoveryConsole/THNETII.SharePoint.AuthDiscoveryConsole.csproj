@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <TargetFrameworks Condition="$([System.Runtime.InteropServices.RuntimeInformation]::ISOsPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">$(TargetFrameworks);net461</TargetFrameworks>
+    <UserSecretsId>ddc51083-f297-41e8-940a-e31986c3c5c3</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup Label="SharePoint">
