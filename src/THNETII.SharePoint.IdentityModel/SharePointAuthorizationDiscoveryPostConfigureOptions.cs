@@ -9,14 +9,6 @@ namespace THNETII.SharePoint.IdentityModel
     public class SharePointAuthorizationDiscoveryPostConfigureOptions
         : IPostConfigureOptions<SharePointAuthorizationDiscoveryOptions>
     {
-        private readonly IHttpClientFactory? httpClientFactory;
-
-        public SharePointAuthorizationDiscoveryPostConfigureOptions(
-            IHttpClientFactory? httpClientFactory = null)
-        {
-            this.httpClientFactory = httpClientFactory;
-        }
-
         public void PostConfigure(string name, SharePointAuthorizationDiscoveryOptions options)
         {
             _ = options ?? throw new ArgumentNullException(nameof(options));
@@ -39,7 +31,7 @@ namespace THNETII.SharePoint.IdentityModel
 
                     if (!string.IsNullOrEmpty(options.MetadataAddress))
                     {
-                        var httpRetriever = httpClientFactory?.CreateClient(name) is HttpClient httpClient
+                        var httpRetriever = options.DiscoveryHttpClient is HttpClient httpClient
                             ? new HttpWwwAuthenticateHeaderParameterRetriever(httpClient)
                             : new HttpWwwAuthenticateHeaderParameterRetriever();
                         httpRetriever.RequireHttps = options.RequireHttpsMetadata;
