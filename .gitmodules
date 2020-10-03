@@ -1,3 +1,3 @@
-[submodule "command-line-extensions"]
-	path = command-line-extensions
-	url = https://github.com/thnetii/command-line-extensions.git
+[submodule "dotnet-command-line"]
+	path = dotnet-command-line
+	url = https://github.com/thnetii/dotnet-command-line.git

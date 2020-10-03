@@ -22,11 +22,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.SharePoint.Identity
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{7520E12A-CB43-4405-863F-B8ED8A346B98}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "command-line-extensions", "command-line-extensions", "{BEB09638-D3CE-40F4-9387-1130CA060898}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet-command-line", "dotnet-command-line", "{BEB09638-D3CE-40F4-9387-1130CA060898}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{907A4898-9F5D-434D-B26F-E10E9BAFF88D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.CommandLine.Hosting", "command-line-extensions\src\THNETII.CommandLine.Hosting\THNETII.CommandLine.Hosting.csproj", "{65039875-5C52-4138-ABA3-F6FD3558E796}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.CommandLine.Hosting", "dotnet-command-line\src\THNETII.CommandLine.Hosting\THNETII.CommandLine.Hosting.csproj", "{65039875-5C52-4138-ABA3-F6FD3558E796}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.SharePoint.AuthDiscoveryConsole", "sample\THNETII.SharePoint.AuthDiscoveryConsole\THNETII.SharePoint.AuthDiscoveryConsole.csproj", "{9EF51B97-DA40-4406-80BA-CF4BAC7BD2CF}"
 EndProject
