@@ -14,7 +14,7 @@
         "[config:Environment=Development]"
       ],
       "cwd": "${workspaceFolder}/sample/THNETII.SharePoint.AuthDiscoveryConsole",
-      "console": "externalTerminal",
+      "console": "internalConsole",
       "stopAtEntry": false
     },
     {

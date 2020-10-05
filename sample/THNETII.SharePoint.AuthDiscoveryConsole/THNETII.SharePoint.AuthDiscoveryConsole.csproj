@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup Label=".NET Generic Host">
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.8">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.8" />
     <ProjectReference Include="..\..\dotnet-command-line\src\THNETII.CommandLine.Hosting\THNETII.CommandLine.Hosting.csproj" />
   </ItemGroup>

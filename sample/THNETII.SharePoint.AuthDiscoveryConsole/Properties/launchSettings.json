@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "THNETII.SharePoint.AuthDiscoveryConsole": {
+      "commandName": "Project",
+      "commandLineArgs": "[config:Environment=Development]"
+    }
+  }
+}

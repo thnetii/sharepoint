@@ -3,6 +3,7 @@ using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Configuration;
@@ -53,6 +54,8 @@ namespace THNETII.SharePoint.AuthDiscoveryConsole
                 .Configure<IConfiguration>((opts, config) =>
                     config.Bind(nameof(SharePoint), opts))
                 .BindCommandLine()
+                .PostConfigure<IHttpClientFactory>((opts, httpClientFactory) =>
+                    opts.DiscoveryHttpClient = httpClientFactory.CreateClient())
                 ;
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<SharePointAuthorizationDiscoveryOptions>, SharePointAuthorizationDiscoveryPostConfigureOptions>());
         }

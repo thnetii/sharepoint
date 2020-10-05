@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <Target Name="InitializePublishDirFormSourceControlManager"
+  <Target Name="InitializePublishDirFromSourceControlManager"
           DependsOnTargets="InitializeSourceControlInformation"
           BeforeTargets="PrepareForPublish">
+    <ItemGroup>
+      <_SourceRootReverseOrder Include="@(SourceRoot->HasMetadata('SourceControl')->Reverse())" />
+    </ItemGroup>
+    
     <PropertyGroup>
       <PublishDir Condition=" '$(TargetFramework)' == '' AND '$(RuntimeIdentifier)' == ''"
-        >@(SourceRoot->WithMetadataValue('SourceControl', 'git'))publish\$(MSBuildProjectName)\$(Configuration)\</PublishDir>
+        >%(_SourceRootReverseOrder.Identity)publish\$(MSBuildProjectName)\$(Configuration)\</PublishDir>
       <PublishDir Condition=" '$(TargetFramework)' != '' AND '$(RuntimeIdentifier)' == ''"
-        >@(SourceRoot->WithMetadataValue('SourceControl', 'git'))publish\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\</PublishDir>
+        >%(_SourceRootReverseOrder.Identity)publish\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\</PublishDir>
       <PublishDir Condition=" '$(TargetFramework)' != '' AND '$(RuntimeIdentifier)' != ''"
-        >@(SourceRoot->WithMetadataValue('SourceControl', 'git'))publish\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\</PublishDir>
+        >%(_SourceRootReverseOrder.Identity)publish\$(MSBuildProjectName)\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\</PublishDir>
       <PublishDir Condition=" '$(TargetFramework)' == '' AND '$(RuntimeIdentifier)' != ''"
-        >@(SourceRoot->WithMetadataValue('SourceControl', 'git'))publish\$(MSBuildProjectName)\$(Configuration)\$(RuntimeIdentifier)\</PublishDir>
+        >%(_SourceRootReverseOrder.Identity)publish\$(MSBuildProjectName)\$(Configuration)\$(RuntimeIdentifier)\</PublishDir>
     </PropertyGroup>
   </Target>
 
@@ -59,9 +63,12 @@
           DependsOnTargets="InitializeSourceControlInformation"
           BeforeTargets="_GetPackageFiles;GenerateNuspec"
           >
+    <ItemGroup>
+      <_SourceRootReverseOrder Include="@(SourceRoot->HasMetadata('SourceControl')->Reverse())" />
+    </ItemGroup>
+    
     <PropertyGroup>
-      <_SourceRootLicenseFilePath Condition=" '%(SourceRoot.SourceControl)' != '' "
-        >%(SourceRoot.Identity)LICENSE</_SourceRootLicenseFilePath>
+      <_SourceRootLicenseFilePath>%(_SourceRootReverseOrder.Identity)LICENSE</_SourceRootLicenseFilePath>
     </PropertyGroup>
     <PropertyGroup Condition="Exists('$(_SourceRootLicenseFilePath)')">
       <PackageLicenseFile>LICENSE</PackageLicenseFile>
