@@ -21,7 +21,7 @@ GET https://{{AuthorizationHost}}/metadata/json/1?realm={{Realm}}
 @TokenRealm = {{GetStsMetadata.response.body.$.realm}}
 
 ###
-# @name IssueStsClientCredentialsToken
+# @name IssueStsClientCredentialsAccessToken
 POST {{TokenEndpoint}}
 Content-Type: application/x-www-form-urlencoded
 
@@ -31,7 +31,7 @@ grant_type=client_credentials
 &resource={{Resource}}
 
 ###
-@SharePointAccessToken = {{IssueStsClientCredentialsToken.response.body.$.access_token}}
+@SharePointAccessToken = {{IssueStsClientCredentialsAccessToken.response.body.$.access_token}}
 
 ###
 # @name GetSharePointApiMeUser
