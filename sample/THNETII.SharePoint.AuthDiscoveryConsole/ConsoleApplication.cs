@@ -14,12 +14,12 @@ using static THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMe
 
 namespace THNETII.SharePoint.AuthDiscoveryConsole
 {
-    public sealed class RootCommandExecutor : ICommandLineExecutor
+    public sealed class ConsoleApplication : ICommandLineExecutor
     {
         private readonly ILogger logger;
         private readonly SharePointAuthorizationDiscoveryOptions options;
 
-        public RootCommandExecutor(
+        public ConsoleApplication(
             IOptions<SharePointAuthorizationDiscoveryOptions> options,
             ILoggerFactory? loggerFactory = null)
         {

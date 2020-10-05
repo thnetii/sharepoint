@@ -20,11 +20,18 @@ namespace THNETII.SharePoint.AuthDiscoveryConsole
     {
         public static Task<int> Main(string[] args)
         {
-            var definition = new RootCommandDefinition();
+            var root = new RootCommand(CommandLineHost.GetEntryAssemblyDescription())
+            { Handler = CommandLineHost.GetCommandHandler<ConsoleApplication>() };
+            root.AddGlobalOption(new Option<string>(new[] { "--site", "-s" })
+            {
+                Name = nameof(SharePointAuthorizationDiscoveryOptions.SiteUrl),
+                Description = "SharePoint site URL",
+                Argument = { Name = "URL" }
+            });
 
-            var parser = new CommandLineBuilder(definition.Command)
+            var parser = new CommandLineBuilder(root)
                 .UseDefaults()
-                .UseHostingDefinition(definition, CreateHostBuilder)
+                .UseHost(CreateHostBuilder)
                 .Build();
 
             return parser.InvokeAsync(args ?? Array.Empty<string>());
