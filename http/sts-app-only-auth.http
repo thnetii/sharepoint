@@ -1,0 +1,46 @@
+@SiteUrl = {{$dotenv SITE_URL}}
+@Domain = {{$dotenv DOMAIN}}
+@Realm = {{$dotenv REALM}}
+@Principal = {{$dotenv PRINCIPAL}}
+@AuthorizationUri = {{$dotenv AUTHORIZATION_URI}}
+@AuthorizationHost = {{$dotenv AUTHORIZATION_INSTANCE}}
+
+@SpoAppClientId = {{$dotenv SPOAPPREG_CLIENTID}}@{{Realm}}
+@SpoAppClientSecret = {{$dotenv SPOAPPREG_CLIENTSECRET}}
+
+###
+@Resource = {{Principal}}/{{Domain}}@{{Realm}}
+
+###
+# @name GetStsMetadata
+GET https://{{AuthorizationHost}}/metadata/json/1?realm={{Realm}}
+
+###
+@TokenEndpoint = {{GetStsMetadata.response.body.$.endpoints[0].location}}
+@TokenIssuer = {{GetStsMetadata.response.body.$.issuer}}
+@TokenRealm = {{GetStsMetadata.response.body.$.realm}}
+
+###
+# @name IssueStsClientCredentialsToken
+POST {{TokenEndpoint}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+&client_id={{SpoAppClientId}}
+&client_secret={{SpoAppClientSecret}}
+&resource={{Resource}}
+
+###
+@SharePointAccessToken = {{IssueStsClientCredentialsToken.response.body.$.access_token}}
+
+###
+# @name GetSharePointApiMeUser
+GET {{SiteUrl}}/_api/me/User
+Authorization: Bearer {{SharePointAccessToken}}
+Accept: application/json
+
+###
+# @name GetSharePointApiMeUserVerbose
+GET {{SiteUrl}}/_api/me/User
+Authorization: Bearer {{SharePointAccessToken}}
+Accept: application/json;odata=verbose

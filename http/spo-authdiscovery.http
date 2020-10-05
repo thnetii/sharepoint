@@ -1,0 +1,15 @@
+@SiteUrl = {{$dotenv SITE_URL}}
+
+###
+# @name HeadEmptyBearerAuthorizationVtiBinClientSvc
+HEAD {{SiteUrl}}/_vti_bin/client.svc
+Authorization: Bearer
+
+###
+@SiteWwwAuthenticateHeader = {{HeadEmptyBearerAuthorizationVtiBinClientSvc.response.headers.WWW-Authenticate}}
+# The following variables can be parsed from the WWW-Authenticate header string
+# in {{SiteWwwAuthenticateHeader}}
+@Realm = {{$dotenv REALM}}
+@Principal = {{$dotenv PRINCIPAL}}
+@AuthorizationUri = {{$dotenv AUTHORIZATION_URI}}
+@AuthorizationHost = {{$dotenv AUTHORIZATION_INSTANCE}}

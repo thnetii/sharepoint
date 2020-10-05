@@ -1,0 +1,79 @@
+@AccessPermission = AllSites.Read
+@SiteUrl = {{$dotenv SITE_URL}}
+@Domain = {{$dotenv DOMAIN}}
+@Realm = {{$dotenv REALM}}
+@Principal = {{$dotenv PRINCIPAL}}
+@AuthorizationUri = {{$dotenv AUTHORIZATION_URI}}
+@AuthorizationHost = {{$dotenv AUTHORIZATION_INSTANCE}}
+@AadAppClientId = {{$dotenv AADAPPREG_CLIENTID}}
+
+###
+# @name GetInstanceDiscovery
+GET https://{{AuthorizationHost}}/common/discovery/instance
+    ?api-version=1.0
+    &authorization_endpoint=https://{{AuthorizationHost}}/{{Realm}}/oauth2/v2.0/authorize
+
+###
+@TenantDiscoveryEndpoint = {{GetInstanceDiscovery.response.body.$.tenant_discovery_endpoint}}
+
+###
+# @name GetTenantDiscovery
+GET {{TenantDiscoveryEndpoint}}
+
+###
+@TokenEndpoint = {{GetTenantDiscovery.response.body.$.token_endpoint}}
+@AuthorizationEndpoint = {{GetTenantDiscovery.response.body.$.authorization_endpoint}}
+@DeviceAuthorizationEndpoint = {{GetTenantDiscovery.response.body.$.device_authorization_endpoint}}
+
+###
+# @name GetDeviceCodeAuthorization
+POST {{DeviceAuthorizationEndpoint}}
+Content-Type: application/x-www-form-urlencoded
+
+&client_id={{AadAppClientId}}
+&scope=offline_access {{Principal}}/{{AccessPermission}}
+
+###
+@DeviceAuthorizationDeviceCode = {{GetDeviceCodeAuthorization.response.body.$.device_code}}
+@DeviceAuthorizationUserCode = {{GetDeviceCodeAuthorization.response.body.$.user_code}}
+@DeviceAuthorizationVerificationUrl = {{GetDeviceCodeAuthorization.response.body.$.verification_uri}}
+
+@DeviceAuthorizationGrantType = device_code
+
+###
+# @name IssuePrincipalAccessToken
+POST {{TokenEndpoint}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type={{DeviceAuthorizationGrantType}}
+&client_id={{AadAppClientId}}
+&device_code={{DeviceAuthorizationDeviceCode}}
+
+###
+@PrincipalAccessToken = {{IssuePrincipalAccessToken.response.body.$.access_token}}
+@PrincipalRefreshToken = {{IssuePrincipalAccessToken.response.body.$.refresh_token}}
+
+###
+# @name IssueDomainAccessToken
+POST {{TokenEndpoint}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token
+&client_id={{AadAppClientId}}
+&scope=https://{{Domain}}/{{AccessPermission}}
+&refresh_token={{PrincipalRefreshToken}}
+
+###
+@SharePointAccessToken = {{IssueDomainAccessToken.response.body.$.access_token}}
+
+###
+# @name GetSharePointApiMeUser
+GET {{SiteUrl}}/_api/me/User
+Authorization: Bearer {{SharePointAccessToken}}
+Accept: application/json
+
+###
+# @name GetSharePointApiMeUserVerbose
+GET {{SiteUrl}}/_api/me/User
+Authorization: Bearer {{SharePointAccessToken}}
+Accept: application/json;odata=verbose
