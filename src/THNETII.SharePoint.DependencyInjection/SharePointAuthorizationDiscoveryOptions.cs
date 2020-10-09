@@ -3,7 +3,9 @@ using System.Net.Http;
 
 using Microsoft.IdentityModel.Protocols;
 
-namespace THNETII.SharePoint.IdentityModel
+using THNETII.SharePoint.IdentityModel;
+
+namespace THNETII.SharePoint.DependencyInjection
 {
     public class SharePointAuthorizationDiscoveryOptions
     {

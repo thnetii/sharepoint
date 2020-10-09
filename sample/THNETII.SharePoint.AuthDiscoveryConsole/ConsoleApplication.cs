@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using THNETII.CommandLine.Hosting;
+using THNETII.SharePoint.DependencyInjection;
 using THNETII.SharePoint.IdentityModel;
 
 using static THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata;

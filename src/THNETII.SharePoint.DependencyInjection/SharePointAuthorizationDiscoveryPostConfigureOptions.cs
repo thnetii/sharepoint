@@ -4,7 +4,9 @@ using System.Net.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols;
 
-namespace THNETII.SharePoint.IdentityModel
+using THNETII.SharePoint.IdentityModel;
+
+namespace THNETII.SharePoint.DependencyInjection
 {
     public class SharePointAuthorizationDiscoveryPostConfigureOptions
         : IPostConfigureOptions<SharePointAuthorizationDiscoveryOptions>

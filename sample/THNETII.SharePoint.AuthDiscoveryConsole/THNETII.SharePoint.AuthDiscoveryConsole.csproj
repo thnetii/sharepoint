@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="SharePoint">
+    <ProjectReference Include="..\..\src\THNETII.SharePoint.DependencyInjection\THNETII.SharePoint.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\src\THNETII.SharePoint.IdentityModel\THNETII.SharePoint.IdentityModel.csproj" />
   </ItemGroup>
 
