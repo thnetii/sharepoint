@@ -22,6 +22,15 @@
       "type": "coreclr",
       "request": "attach",
       "processId": "${command:pickProcess}"
-    }
+    },
+    {
+      "name": "PowerShell Launch Sharepoint Script",
+      "type": "PowerShell",
+      "request": "launch",
+      "script": "${workspaceFolder}/scripts/sharepoint.ps1",
+      "cwd": "${workspaceFolder}",
+      "createTemporaryIntegratedConsole": true,
+      "preLaunchTask": "publish PowerShell"
+    },
   ]
 }

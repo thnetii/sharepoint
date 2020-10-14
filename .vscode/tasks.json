@@ -37,8 +37,34 @@
         // Ask dotnet publish to generate full paths for file names.
         "/property:GenerateFullPaths=true",
         // Do not generate summary otherwise it leads to duplicate errors in Problems panel
-        "/consoleloggerparameters:NoSummary",
-        "-bl:MSBuild.binlog"
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "dependsOn": [
+        "build"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "publish PowerShell",
+      "command": "dotnet",
+      "type": "shell",
+      "args": [
+        "publish",
+        "--framework",
+        "netcoreapp3.1",
+        "${workspaceFolder}/src/THNETII.SharePoint.PowerShell",
+        // Ask dotnet publish to generate full paths for file names.
+        "/property:GenerateFullPaths=true",
+        // Do not generate summary otherwise it leads to duplicate errors in Problems panel
+        "/consoleloggerparameters:NoSummary"
       ],
       "dependsOn": [
         "build"
