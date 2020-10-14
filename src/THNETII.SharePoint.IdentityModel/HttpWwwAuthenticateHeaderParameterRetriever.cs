@@ -62,6 +62,9 @@ namespace THNETII.SharePoint.IdentityModel
                 string wwwAuthParam = wwwAuthenticateHeader?.Parameter ?? string.Empty;
                 const string separator = ",";
                 var locationHeaderUri = resp.Headers.Location;
+                if (!(locationHeaderUri is null) && !locationHeaderUri.IsAbsoluteUri) {
+                    locationHeaderUri = new Uri(resp.RequestMessage.RequestUri, locationHeaderUri);
+                }
                 if (locationHeaderUri?.DnsSafeHost is string domain)
                 {
                     domain = EscapeWwwAuthParamString(domain);
