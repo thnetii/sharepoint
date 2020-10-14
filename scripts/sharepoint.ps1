@@ -14,3 +14,10 @@ $Discovery = Get-SPAuthDiscovery -SiteUri $SiteUri
 
 $Discovery | Format-List *
 
+[Microsoft.Identity.Client.PublicClientApplicationBuilder]$MsalBuilder = `
+    $Discovery | New-SPAuthMsalPublicClientApplicationBuilder `
+    -ClientId $config.MsalClientId
+[Microsoft.Identity.Client.IPublicClientApplication]$MsalApp = `
+    $MsalBuilder.Build()
+
+$MsalApp.AppConfig | Format-List *

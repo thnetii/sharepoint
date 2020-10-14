@@ -59,3 +59,61 @@ function Get-SPAuthDiscovery {
     $Manager.GetConfigurationAsync([System.Threading.CancellationToken]::None
         ).GetAwaiter().GetResult()
 }
+
+function New-SPAuthMsalPublicClientApplicationBuilder {
+    [CmdletBinding(DefaultParameterSetName="BySiteUri")]
+    [OutputType([Microsoft.Identity.Client.PublicClientApplicationBuilder])]
+    param (
+        [Parameter(ParameterSetName="BySiteUri", Mandatory=$true)]
+        [uri]$SiteUri,
+        [Parameter(ParameterSetName="BySiteUri", Mandatory=$false, ValueFromPipeline=$true)]
+        [Parameter(ParameterSetName="ByAuthMetadata", Mandatory=$true, ValueFromPipeline=$true)]
+        [THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]$AuthDiscovery,
+        [AllowNull()]
+        [string]$ClientId,
+        [AllowNull()]
+        [Microsoft.Identity.Client.PublicClientApplicationOptions]$Options
+    )
+
+    if (-not $AuthDiscovery) {
+        $AuthDiscovery = Get-SPAuthDiscovery -SiteUri $SiteUri
+    }
+
+    if (-not $Options) {
+        $Options = New-Object Microsoft.Identity.Client.PublicClientApplicationOptions
+    }
+
+    $Options.Instance = $AuthDiscovery.GetAuthorizationInstance()
+    $Options.TenantId = $AuthDiscovery.Realm
+
+    $Options | New-MsalPublicClientApplicationBuilder -ClientId $ClientId
+}
+
+function New-SPAuthMsalConfidentialClientApplicationBuilder {
+    [CmdletBinding(DefaultParameterSetName="BySiteUri")]
+    [OutputType([Microsoft.Identity.Client.ConfidentialClientApplicationBuilder])]
+    param (
+        [Parameter(ParameterSetName="BySiteUri", Mandatory=$true)]
+        [uri]$SiteUri,
+        [Parameter(ParameterSetName="BySiteUri", Mandatory=$false, ValueFromPipeline=$true)]
+        [Parameter(ParameterSetName="ByAuthMetadata", Mandatory=$true, ValueFromPipeline=$true)]
+        [THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]$AuthDiscovery,
+        [AllowNull()]
+        [string]$ClientId,
+        [AllowNull()]
+        [Microsoft.Identity.Client.ConfidentialClientApplicationOptions]$Options
+    )
+
+    if (-not $AuthDiscovery) {
+        $AuthDiscovery = Get-SPAuthDiscovery -SiteUri $SiteUri
+    }
+
+    if (-not $Options) {
+        $Options = New-Object Microsoft.Identity.Client.ConfidentialClientApplicationOptions
+    }
+
+    $Options.Instance = $AuthDiscovery.GetAuthorizationInstance()
+    $Options.TenantId = $AuthDiscovery.Realm
+
+    $Options | New-MsalConfidentialClientApplicationBuilder -ClientId $ClientId
+}
