@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\THNETII.SharePoint.IdentityModel\THNETII.SharePoint.IdentityModel.csproj" />
+    <ProjectReference Include="..\..\submodules\thnetii\msal-extensions\src\THNETII.Msal.PowerShell\THNETII.Msal.PowerShell.csproj" />
   </ItemGroup>
 
   <ItemGroup>

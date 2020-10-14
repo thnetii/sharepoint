@@ -1,3 +1,5 @@
+$ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
+
 $config = Get-Content -Path (Join-Path $PSScriptRoot "configuration.json") | ConvertFrom-Json
 [uri]$SiteUri = $config.SiteUrl
 
