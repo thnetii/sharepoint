@@ -14,7 +14,6 @@ using Microsoft.Extensions.Options;
 
 using THNETII.CommandLine.Hosting;
 using THNETII.SharePoint.DependencyInjection;
-using THNETII.SharePoint.IdentityModel;
 
 namespace THNETII.SharePoint.AuthDiscoveryConsole
 {
