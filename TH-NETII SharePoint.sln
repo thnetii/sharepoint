@@ -62,6 +62,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D81E88D9-BF7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.Logging.DiagnosticsForwarding", "submodules\thnetii\msal-extensions\submodules\thnetii\dotnet-logging\src\THNETII.Logging.DiagnosticsForwarding\THNETII.Logging.DiagnosticsForwarding.csproj", "{84E2A97D-0A81-4E50-A58C-B4652E1519DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.SharePoint.BearerAuthorization", "src\THNETII.SharePoint.BearerAuthorization\THNETII.SharePoint.BearerAuthorization.csproj", "{968E2B3A-5775-4C01-9C3C-D63C66F14A45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.SharePoint.AzureAcs.Protocol", "src\THNETII.SharePoint.AzureAcs.Protocol\THNETII.SharePoint.AzureAcs.Protocol.csproj", "{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -204,6 +208,30 @@ Global
 		{84E2A97D-0A81-4E50-A58C-B4652E1519DE}.Release|x64.Build.0 = Release|Any CPU
 		{84E2A97D-0A81-4E50-A58C-B4652E1519DE}.Release|x86.ActiveCfg = Release|Any CPU
 		{84E2A97D-0A81-4E50-A58C-B4652E1519DE}.Release|x86.Build.0 = Release|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Debug|x64.Build.0 = Debug|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Debug|x86.Build.0 = Debug|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Release|x64.ActiveCfg = Release|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Release|x64.Build.0 = Release|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Release|x86.ActiveCfg = Release|Any CPU
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45}.Release|x86.Build.0 = Release|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Debug|x64.Build.0 = Debug|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Debug|x86.Build.0 = Debug|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Release|x64.ActiveCfg = Release|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Release|x64.Build.0 = Release|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Release|x86.ActiveCfg = Release|Any CPU
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -229,6 +257,8 @@ Global
 		{E49424FF-7DDD-461C-B2E1-FBA3AD60EB5B} = {7BA3AC58-3463-46D3-87D7-CF1091562FD0}
 		{D81E88D9-BF75-41E4-ABBB-B205711DE9C4} = {E49424FF-7DDD-461C-B2E1-FBA3AD60EB5B}
 		{84E2A97D-0A81-4E50-A58C-B4652E1519DE} = {D81E88D9-BF75-41E4-ABBB-B205711DE9C4}
+		{968E2B3A-5775-4C01-9C3C-D63C66F14A45} = {FE444EC8-E80C-451C-9904-A2059BC349A1}
+		{1450AF8B-B6BA-49F3-89E6-FA3A9CC9EA2D} = {FE444EC8-E80C-451C-9904-A2059BC349A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53C9A738-B259-4812-BEEC-1F362838E0EC}
