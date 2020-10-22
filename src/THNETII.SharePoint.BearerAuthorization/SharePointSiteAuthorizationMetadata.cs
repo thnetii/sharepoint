@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+using Microsoft.IdentityModel.Tokens;
 
 namespace THNETII.SharePoint.BearerAuthorization
 {
@@ -78,5 +82,88 @@ namespace THNETII.SharePoint.BearerAuthorization
             { Length: int l } when l > 0 => ResourcePrincipal + '/' + Domain + '@' + Realm,
             _ => ResourcePrincipal + '@' + Realm,
         };
+
+        private static readonly Dictionary<string, Regex> trustedIssuerRegexes =
+            new Dictionary<string, Regex>(StringComparer.Ordinal);
+
+        public static IssuerValidator TrustedIssuerValidator { get; } = ValidateIssuer;
+
+        private static string ValidateIssuer(string issuer, SecurityToken securityToken, TokenValidationParameters validationParameters)
+        {
+            var trustedIssuers = validationParameters switch
+            {
+                { ValidIssuer: string singleIssuer }
+                when singleIssuer.Length > 0 => new[] { singleIssuer },
+                { ValidIssuers: IEnumerable<string> issuers } => issuers,
+                _ => Enumerable.Empty<string>(),
+            };
+
+            if (trustedIssuers
+                .Select(i => GetOrCreateIssuerRegex(i))
+                .Any(r => r.IsMatch(issuer)))
+                return issuer;
+
+            throw new SecurityTokenInvalidIssuerException
+            {
+                InvalidIssuer = issuer
+            };
+        }
+
+        private static Regex GetOrCreateIssuerRegex(string issuer)
+        {
+            Regex? regex;
+            lock (trustedIssuerRegexes)
+            {
+                if (trustedIssuerRegexes.TryGetValue(issuer, out regex))
+                    return regex;
+            }
+            regex = CreateIssuerRegex(issuer);
+            lock (trustedIssuerRegexes)
+            {
+                trustedIssuerRegexes[issuer] = regex;
+            }
+            return regex;
+        }
+
+        private static Regex CreateIssuerRegex(string issuer)
+        {
+            var issuerSpan = issuer.AsSpan();
+            var regexBuilder = new StringBuilder(issuerSpan.Length + 10);
+            for (int asterisk = issuerSpan.IndexOf('*');
+                asterisk >= 0;
+                issuerSpan = issuerSpan.Slice(asterisk + 1),
+                asterisk = issuerSpan.IndexOf('*'))
+            {
+                string stringPart = issuerSpan.Slice(0, asterisk).ToString();
+                string regexPart = Regex.Escape(stringPart);
+                regexBuilder.Append(regexPart);
+                regexBuilder.Append(".*");
+            }
+            regexBuilder.Append(issuerSpan
+#if !NETSTANDARD_API_STRING_STRINGCOMPARISON
+                .ToString()
+#endif
+                );
+            return new Regex(regexBuilder.ToString());
+        }
+
+        public void ConfigureAccessTokenValidation(
+            TokenValidationParameters parameters)
+        {
+            if (parameters is null)
+                return;
+
+            if (!string.IsNullOrEmpty(Domain))
+            {
+                parameters.ValidAudience = "https://" + Domain;
+                parameters.ValidateAudience = true;
+                parameters.IgnoreTrailingSlashWhenValidatingAudience = true;
+            }
+
+            parameters.ValidateIssuer = true;
+            parameters.ValidIssuer = null;
+            parameters.ValidIssuers = TrustedIssuers;
+            parameters.IssuerValidator = TrustedIssuerValidator;
+        }
     }
 }
