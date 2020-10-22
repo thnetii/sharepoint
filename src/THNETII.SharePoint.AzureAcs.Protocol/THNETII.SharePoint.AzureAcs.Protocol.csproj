@@ -5,25 +5,19 @@
     <TargetFrameworks Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">$(TargetFrameworks);net45;net461</TargetFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="
+    !($([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework' AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt;= '4.5')
+    ">
+    <DefineConstants>$(DefineConstants);SYSTEM_DATETIMEOFFSET_UNIXTIME_API</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\THNETII.SharePoint.BearerAuthorization\THNETII.SharePoint.BearerAuthorization.csproj" />
-  </ItemGroup>
-
-  <PropertyGroup Condition="
-             !($([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework' AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt;= '4.5')
-             ">
-    <DefineConstants>$(DefineConstants);NETSTANDARD_API_SYSTEM_TEXT_JSON</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Condition="
-             !($([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework' AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt;= '4.5')
-             ">
-    <PackageReference Include="System.Text.Json" Version="4.7.2" />
-  </ItemGroup>
-
-  <ItemGroup Condition="
-             ($([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETCoreApp' AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= '3.1')
-             ">
-    <PackageReference Remove="System.Text.Json" />
   </ItemGroup>
 
 </Project>

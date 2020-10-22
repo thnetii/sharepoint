@@ -1,20 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-#if NETSTANDARD_API_SYSTEM_TEXT_JSON
-using System.Text.Json;
-#endif
+
+using Newtonsoft.Json;
 
 namespace THNETII.SharePoint.AzureAcs.Protocol
 {
-    [DataContract]
     public class AcsSecurityKeyValueData
     {
-        [DataMember(Name = "type")]
+        [JsonProperty("type")]
         public string Type { get; set; } = null!;
-        [DataMember(Name = "value")]
+        [JsonProperty("value")]
         public string Base64Data { get; set; } = null!;
-        [DataMember(Name = "keyInfo")]
+        [JsonProperty("keyInfo")]
         public IDictionary<string, object> Information { get; } =
             new Dictionary<string, object>(StringComparer.Ordinal);
     }

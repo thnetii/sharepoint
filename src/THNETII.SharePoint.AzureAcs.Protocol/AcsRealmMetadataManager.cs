@@ -1,7 +1,6 @@
-﻿using System;
-#if NETSTANDARD_API_SYSTEM_TEXT_JSON
-using System.Text.Json;
-#endif
+using System;
+using System.Net.Http;
+
 using Microsoft.IdentityModel.Protocols;
 
 namespace THNETII.SharePoint.AzureAcs.Protocol
@@ -12,6 +11,18 @@ namespace THNETII.SharePoint.AzureAcs.Protocol
         public const string DefaultInstance = "https://accounts.accesscontrol.windows.net";
         private static readonly AcsRealmMetadataRetriever defaultConfigRetriever =
             new AcsRealmMetadataRetriever();
+
+        public AcsRealmMetadataManager(
+            string realm, HttpClient? httpClient)
+            : this(realm, instance: default, httpClient)
+        { }
+
+        public AcsRealmMetadataManager(
+            string realm, string? instance, HttpClient? httpClient)
+            : this(realm, instance ?? DefaultInstance,
+                  configRetriever: default,
+                  !(httpClient is null) ? new HttpDocumentRetriever(httpClient) : default)
+        { }
 
         public AcsRealmMetadataManager(
             string realm, string? instance = DefaultInstance,
