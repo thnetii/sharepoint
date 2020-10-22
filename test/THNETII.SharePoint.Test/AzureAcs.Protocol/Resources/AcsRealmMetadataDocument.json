@@ -1,0 +1,49 @@
+{
+  "keys": [
+    {
+      "usage": "signing",
+      "keyValue": {
+        "type": "x509Certificate",
+        "value": "MIIDBTCCAe2gAwIBAgIQQiR8gZNKuYpH6cP+KIE5ijANBgkqhkiG9w0BAQsFADAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MB4XDTIwMDgyODAwMDAwMFoXDTI1MDgyODAwMDAwMFowLTErMCkGA1UEAxMiYWNjb3VudHMuYWNjZXNzY29udHJvbC53aW5kb3dzLm5ldDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMkymupuRhTpZc+6CBxQpL0SaAb+8CzLiiDyx2xRoecjojvKN2pKKjIX9cejMSDRoWaOnZCK4VZVX1iYRCWT1WkHb8r1ZpSGa7oXG89zxjKjwG46tiamwdZjJ7Mhh8fqLz9ApucY/LICPMJuu6d56LKs6hb4OpjylTvsNUAa+bHg1NgMFNg0fPCxdr9N2Y4J+Jhrz3VDl4oU0KDZX/pyRXblzA8kYGWm50dh5WB4WoB8MtW3lltVrRGj8/IgTf9GxpBsO9OWgwVByZHU7ctZs7AmUbq/59Ipql7vSM6EsoquXdMiq0QOcZAPitwzHkTKrmeULz0/RHnuBGXxS/e8wX0CAwEAAaMhMB8wHQYDVR0OBBYEFGcWXwaqmO25Blh2kHHAFrM/AS2CMA0GCSqGSIb3DQEBCwUAA4IBAQDFnKQ98CBnvVd4OhZP0KpaKbyDv93PGukE1ifWilFlWhvDde2mMv/ysBCWAR8AGSb1pAW/ZaJlMvqSN/+dXihcHzLEfKbCPw4/Mf2ikq4gqigt5t6hcTOSxL8wpe8OKkbNCMcU0cGpX5NJoqhJBt9SjoD3VPq7qRmDHX4h4nniKUMI7awI94iGtX/vlHnAMU4+8y6sfRQDGiCIWPSyypIWfEA6/O+SsEQ7vZ/b4mXlghUmxL+o2emsCI1e9PORvm5yc9Y/htN3Ju0x6ElHnih7MJT6/YUMISuyob9/mbw8Vf49M7H2t3AE5QIYcjqTwWJcwMlq5i9XfW2QLGH7K5i8",
+        "keyInfo": {
+          "x5t": "kg2LYs2T0CTjIfj4rt6JIynen38"
+        }
+      }
+    },
+    {
+      "usage": "signing",
+      "keyValue": {
+        "type": "x509Certificate",
+        "value": "MIIC8TCCAdmgAwIBAgIQSoIG9pq9C4lOtPUfxLmCSDANBgkqhkiG9w0BAQsFADAjMSEwHwYDVQQDExhsb2dpbi5taWNyb3NvZnRvbmxpbmUudXMwHhcNMjAwOTEzMDAwMDAwWhcNMjUwOTEzMDAwMDAwWjAjMSEwHwYDVQQDExhsb2dpbi5taWNyb3NvZnRvbmxpbmUudXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC/e2f3QJWSonnuBNm7xtsLfs1fRGWg+USd6UeaqhsASIMtG6rDse/Yzmj2JEWEXixLDrh+vo/fey0tYqnNWabjLodSLz1B5CZgI1jPFDLZX60GIvFZfe+1ViBQXB9kPPhMgS78hruuBODxocny39vqbP/E9paUslZIUGU1jbbPYpfztQusTkBU0yvXblpo9YuHEIZZiueTkp0ysMZvVy44THNfhL799CtEBZOlBaGqLRsSf1jS8hYoP37YKQuZmUkaA654gJK4rDBZebztEp6uAdVL2wQaRJoHBY60I9Yuy/TU1zSxnKY2zcGQ9mxAqKhiR2jHpt5dJDBiyZe0FkeNAgMBAAGjITAfMB0GA1UdDgQWBBTuNouNBOGNFuUdRuSpaTYO2ZRL6DANBgkqhkiG9w0BAQsFAAOCAQEAKZD3Hn+79D/S9Xby/8zSHhYlsXM4FrxDUggt29o15EdBdxyLHCwc3bXZI2PMn0u5vBoz9T0U/MnzoUIxdkmSI9qhfpaxrz7LPEFsMLN6uqRfN9XbypaGcHXP4Qb4xLjLqlmqc8TCUAi0MAokCVSLl83lIbF8/Kw4hSYWMs7HdiuJLHwIgWSd9mguaPks+w64268bw7yZnKutE8xj1x3f6f6AqD3yZr6B1IfnVgrWX4kQIF8z0XB4J5jPaCcORRRB1GV/aSKhNFXWbJ7Z2UnX5f27dX1mgrnFb48jAZLuoeRn7M7+gtj/wPzRiYN845c9wyx91HDo4xqvq/dFtRQ3dQ==",
+        "keyInfo": {
+          "x5t": "18pnMg3UmrWvBK_tkDAbjgM5CmA"
+        }
+      }
+    }
+  ],
+  "endpoints": [
+    {
+      "location": "https://accounts.accesscontrol.windows.net/72416f3c-199e-43f6-9bb5-29f4a10665d5/tokens/OAuth/2",
+      "protocol": "OAuth2",
+      "usage": "issuance"
+    },
+    {
+      "location": "https://accounts.accesscontrol.windows.net/72416f3c-199e-43f6-9bb5-29f4a10665d5/tokens/delegation/1",
+      "protocol": "DelegationIssuance1.0",
+      "usage": "issuance"
+    },
+    {
+      "location": "https://accounts.accesscontrol.windows.net/72416f3c-199e-43f6-9bb5-29f4a10665d5/mgmt/delegation/1",
+      "protocol": "DelegationManagement1.0",
+      "usage": "management"
+    }
+  ],
+  "version": "1.0",
+  "realm": "72416f3c-199e-43f6-9bb5-29f4a10665d5",
+  "name": "sts",
+  "allowedAudiences": [
+    "00000001-0000-0000-c000-000000000000/accounts.accesscontrol.windows.net@fredrikhoeisaetherhotmail.onmicrosoft.com",
+    "00000001-0000-0000-c000-000000000000/accounts.accesscontrol.windows.net@72416f3c-199e-43f6-9bb5-29f4a10665d5"
+  ],
+  "issuer": "00000001-0000-0000-c000-000000000000@72416f3c-199e-43f6-9bb5-29f4a10665d5"
+}
