@@ -39,12 +39,11 @@ namespace THNETII.SharePoint.AzureAcs.Protocol
             instance ??= DefaultInstance;
             const string slash = "/";
             const string metadataPath = "metadata/json/1?realm=";
-            string address;
+            realm = Uri.EscapeDataString(realm ?? string.Empty);
             if (instance.AsSpan().EndsWith(slash.AsSpan(), StringComparison.Ordinal))
-                address = instance + metadataPath;
+                return instance + metadataPath + realm;
             else
-                address = instance + slash + metadataPath;
-            return address + Uri.EscapeDataString(realm ?? string.Empty);
+                return instance + slash + metadataPath + realm;
         }
     }
 }
