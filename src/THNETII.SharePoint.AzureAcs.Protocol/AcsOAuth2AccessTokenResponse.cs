@@ -1,6 +1,8 @@
 using System;
 using System.Globalization;
 
+using Microsoft.IdentityModel.Tokens;
+
 using Newtonsoft.Json;
 
 namespace THNETII.SharePoint.AzureAcs.Protocol
@@ -53,24 +55,12 @@ namespace THNETII.SharePoint.AzureAcs.Protocol
         [JsonProperty("token_type")]
         public string TokenType { get; set; } = null!;
 
-#if !SYSTEM_DATETIMEOFFSET_UNIXTIME_API
-        private static readonly DateTimeOffset epoch = new DateTimeOffset(
-            1970, 01, 01, 00, 00, 00, TimeSpan.Zero
-            );
-#endif
-
         private static string? GetEpochOffsetStringFromDateTimeOffset(DateTimeOffset? value)
         {
             if (!value.HasValue)
                 return null;
 
-            long epochOffset;
-#if SYSTEM_DATETIMEOFFSET_UNIXTIME_API
-            epochOffset = value.Value.ToUnixTimeSeconds();
-#else // !SYSTEM_DATETIMEOFFSET_UNIXTIME_API
-            epochOffset = (long)(value.Value - epoch).TotalSeconds;
-#endif
-
+            long epochOffset = EpochTime.GetIntDate(value.Value.UtcDateTime);
             return epochOffset.ToString(CultureInfo.InvariantCulture);
         }
 
@@ -79,13 +69,8 @@ namespace THNETII.SharePoint.AzureAcs.Protocol
             if (string.IsNullOrEmpty(value))
                 return null;
 
-#if SYSTEM_DATETIMEOFFSET_UNIXTIME_API
             long epochOffset = long.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
-            return DateTimeOffset.FromUnixTimeSeconds(epochOffset);
-#else // !SYSTEM_DATETIMEOFFSET_UNIXTIME_API
-            double epochOffset = double.Parse(value, NumberStyles.Integer, CultureInfo.InvariantCulture);
-            return epoch + TimeSpan.FromSeconds(epochOffset);
-#endif
+            return EpochTime.DateTime(epochOffset);
         }
     }
 }
