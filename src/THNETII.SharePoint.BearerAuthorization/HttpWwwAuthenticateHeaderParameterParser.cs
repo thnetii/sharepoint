@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+using System.Text;
 
 namespace THNETII.SharePoint.BearerAuthorization
 {
@@ -30,14 +30,19 @@ namespace THNETII.SharePoint.BearerAuthorization
             return result;
         }
 
-
         private static ReadOnlySpan<char> ReadToken(ref ReadOnlySpan<char> buffer)
         {
             int end = buffer.IndexOfAny(invalidTokenChars);
             if (end < 0)
                 return ReadOnlySpan<char>.Empty;
             var result = buffer.Slice(0, end);
-            buffer = buffer.Slice(end);
+            buffer =
+#if CSHARP_LANG_FEATURE_RANGE_INDEX
+                buffer[end..]
+#else
+                buffer.Slice(end)
+#endif
+                ;
             return result;
         }
 
@@ -46,7 +51,13 @@ namespace THNETII.SharePoint.BearerAuthorization
             buffer = buffer.TrimStart();
             if (buffer.IsEmpty || buffer[0] != ch)
                 return false;
-            buffer = buffer.Slice(1).TrimStart();
+            buffer =
+#if CSHARP_LANG_FEATURE_RANGE_INDEX
+                buffer[1..].TrimStart()
+#else
+                buffer.Slice(1).TrimStart()
+#endif
+                ;
             return true;
         }
 
@@ -65,7 +76,13 @@ namespace THNETII.SharePoint.BearerAuthorization
                         i++;
                         goto default;
                     case '"':
-                        buffer = buffer.Slice(i + 1);
+                        buffer =
+#if CSHARP_LANG_FEATURE_RANGE_INDEX
+                            buffer[(i + 1)..]
+#else
+                            buffer.Slice(i + 1)
+#endif
+                            ;
                         return stringBuilder.ToString();
                     default:
                         stringBuilder.Append(buffer[i]);

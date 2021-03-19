@@ -131,11 +131,23 @@ namespace THNETII.SharePoint.BearerAuthorization
             var regexBuilder = new StringBuilder(issuerSpan.Length + 10);
             for (int asterisk = issuerSpan.IndexOf('*');
                 asterisk >= 0;
-                issuerSpan = issuerSpan.Slice(asterisk + 1),
+                issuerSpan =
+#if CSHARP_LANG_FEATURE_RANGE_INDEX
+                    issuerSpan[(asterisk + 1)..]
+#else
+                    issuerSpan.Slice(asterisk + 1)
+#endif
+                    ,
                 asterisk = issuerSpan.IndexOf('*'))
             {
-                string stringPart = issuerSpan.Slice(0, asterisk).ToString();
-                string regexPart = Regex.Escape(stringPart);
+                var stringPart =
+#if CSHARP_LANG_FEATURE_RANGE_INDEX
+                    issuerSpan[..asterisk]
+#else
+                    issuerSpan.Slice(0, asterisk)
+#endif
+                    ;
+                string regexPart = Regex.Escape(stringPart.ToString());
                 regexBuilder.Append(regexPart);
                 regexBuilder.Append(".*");
             }
