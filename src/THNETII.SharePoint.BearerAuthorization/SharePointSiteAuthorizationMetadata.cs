@@ -84,7 +84,7 @@ namespace THNETII.SharePoint.BearerAuthorization
         };
 
         private static readonly Dictionary<string, Regex> trustedIssuerRegexes =
-            new Dictionary<string, Regex>(StringComparer.Ordinal);
+            new(StringComparer.Ordinal);
 
         public static IssuerValidator TrustedIssuerValidator { get; } = ValidateIssuer;
 
