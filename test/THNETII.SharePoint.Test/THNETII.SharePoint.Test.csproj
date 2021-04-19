@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-    <TargetFrameworks Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">$(TargetFrameworks);net452;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net452;net461</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <RootNamespace>THNETII.SharePoint</RootNamespace>
   </PropertyGroup>
