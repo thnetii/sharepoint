@@ -41,7 +41,7 @@ namespace THNETII.SharePoint.BearerAuthorization
 
         private static OptionsBuilder<TOptions> AddNestedNamedOptions
             <TOptions>(this OptionsBuilder<TOptions> optionsBuilder,
-                string nestedOptionsName, Action<TOptions> configureNestedOptions,
+                string nestedOptionsName, Action<TOptions>? configureNestedOptions,
                 Func<string, string> nestedSiteUrlTransform)
             where TOptions : SharePointSiteAuthorizationOptions
         {
