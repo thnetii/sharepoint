@@ -1,50 +1,38 @@
 Import-Module (Join-Path $PSScriptRoot "THNETII.Msal.PowerShell.psm1")
 Add-Type -LiteralPath (Join-Path $PSScriptRoot "Microsoft.SharePoint.Client.dll")
 Add-Type -LiteralPath (Join-Path $PSScriptRoot "Microsoft.IdentityModel.Protocols.dll")
-Add-Type -LiteralPath (Join-Path $PSScriptRoot "THNETII.SharePoint.IdentityModel.dll")
+Add-Type -LiteralPath (Join-Path $PSScriptRoot "THNETII.SharePoint.BearerAuthorization.dll")
+Add-Type -LiteralPath (Join-Path $PSScriptRoot "THNETII.SharePoint.AzureAcs.Protocol.dll")
+Add-Type -LiteralPath (Join-Path $PSScriptRoot "System.IdentityModel.Tokens.Jwt.dll")
 
-[System.Collections.Generic.IDictionary[string,Microsoft.IdentityModel.Protocols.IConfigurationManager[THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]]] `
-$Script:SPAuthDiscoveryManagers = New-Object "System.Collections.Generic.Dictionary[string,Microsoft.IdentityModel.Protocols.IConfigurationManager[THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]]" `
+[System.Collections.Generic.IDictionary[string,Microsoft.IdentityModel.Protocols.IConfigurationManager[THNETII.SharePoint.BearerAuthorization.SharePointSiteAuthorizationMetadata]]] `
+$Script:SPAuthDiscoveryManagers = New-Object "System.Collections.Generic.Dictionary[string,Microsoft.IdentityModel.Protocols.IConfigurationManager[THNETII.SharePoint.BearerAuthorization.SharePointSiteAuthorizationMetadata]]" `
     -ArgumentList @([System.StringComparer]::OrdinalIgnoreCase)
 
 function Get-SPAuthDiscoveryManager {
     [CmdletBinding()]
-    [OutputType([Microsoft.IdentityModel.Protocols.IConfigurationManager[THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]])]
+    [OutputType([Microsoft.IdentityModel.Protocols.IConfigurationManager[THNETII.SharePoint.BearerAuthorization.SharePointSiteAuthorizationMetadata]])]
     param (
         [Parameter(Mandatory=$true, Position=0)]
         [ValidateNotNull()]
         [uri]$SiteUri
     )
 
-    $ProbeUri = New-Object System.UriBuilder $SiteUri
-    if (-not $ProbeUri.Path.EndsWith("/")) {
-        $ProbeUri.Path += "/"
-    }
-    $ProbeUri.Path += "_vti_bin/client.svc"
-    [string]$ProbeUrl = $ProbeUri.Uri
-    [Microsoft.IdentityModel.Protocols.IConfigurationManager[THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]] `
+    [Microsoft.IdentityModel.Protocols.IConfigurationManager[THNETII.SharePoint.BearerAuthorization.SharePointSiteAuthorizationMetadata]]`
     $Manager = $null
-
-    [switch]$Found = $Script:SPAuthDiscoveryManagers.TryGetValue($ProbeUrl, [ref] $Manager)
+    [switch]$Found = $Script:SPAuthDiscoveryManagers.TryGetValue($SiteUri, [ref] $Manager)
     if ($Found) {
         return $Manager
     }
 
-    [THNETII.SharePoint.IdentityModel.HttpWwwAuthenticateHeaderParameterRetriever] `
-    $HttpRetriever = New-Object THNETII.SharePoint.IdentityModel.HttpWwwAuthenticateHeaderParameterRetriever
-    [THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryRetriever] `
-    $MetaRetriever = New-Object THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryRetriever
-    $Manager = New-Object "Microsoft.IdentityModel.Protocols.ConfigurationManager[THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]" `
-        -ArgumentList @([string]$ProbeUrl,
-            [Microsoft.IdentityModel.Protocols.IConfigurationRetriever[THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]]$MetaRetriever,
-            [Microsoft.IdentityModel.Protocols.IDocumentRetriever]$HttpRetriever)
-    $Script:SPAuthDiscoveryManagers[$ProbeUrl] = $Manager
+    $Manager = New-Object "THNETII.SharePoint.BearerAuthorization.SharePointSiteAuthorizationManager" ([string]$SiteUri)
+    $Script:SPAuthDiscoveryManagers[$SiteUri] = $Manager
     return $Manager
 }
 
 function Get-SPAuthDiscovery {
     [CmdletBinding()]
-    [OutputType([THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata])]
+    [OutputType([THNETII.SharePoint.BearerAuthorization.SharePointSiteAuthorizationMetadata])]
     param (
         [Parameter(Mandatory=$true, Position=0)]
         [ValidateNotNull()]
@@ -68,7 +56,7 @@ function New-SPAuthMsalPublicClientApplicationBuilder {
         [uri]$SiteUri,
         [Parameter(ParameterSetName="BySiteUri", Mandatory=$false, ValueFromPipeline=$true)]
         [Parameter(ParameterSetName="ByAuthMetadata", Mandatory=$true, ValueFromPipeline=$true)]
-        [THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]$AuthDiscovery,
+        [THNETII.SharePoint.BearerAuthorization.SharePointSiteAuthorizationMetadata]$AuthDiscovery,
         [AllowNull()]
         [string]$ClientId,
         [AllowNull()]
@@ -97,7 +85,7 @@ function New-SPAuthMsalConfidentialClientApplicationBuilder {
         [uri]$SiteUri,
         [Parameter(ParameterSetName="BySiteUri", Mandatory=$false, ValueFromPipeline=$true)]
         [Parameter(ParameterSetName="ByAuthMetadata", Mandatory=$true, ValueFromPipeline=$true)]
-        [THNETII.SharePoint.IdentityModel.SharePointAuthorizationDiscoveryMetadata]$AuthDiscovery,
+        [THNETII.SharePoint.BearerAuthorization.SharePointSiteAuthorizationMetadata]$AuthDiscovery,
         [AllowNull()]
         [string]$ClientId,
         [AllowNull()]

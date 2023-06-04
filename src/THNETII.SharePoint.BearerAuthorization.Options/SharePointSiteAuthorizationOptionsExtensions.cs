@@ -85,9 +85,9 @@ namespace THNETII.SharePoint.BearerAuthorization
                 {
                     value =
 #if CSHARP_LANG_FEATURE_RANGE_INDEX
-                    value[..^(SharePointOnlineMySitePrefixSuffix.Length)]
+                        value[..^(SharePointOnlineMySitePrefixSuffix.Length)]
 #else
-                    value.Slice(0, value.Length - suffix.Length)
+                        value.Slice(0, value.Length - suffix.Length)
 #endif
                     ;
                 }

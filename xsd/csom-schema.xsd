@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="clientquery" targetNamespace="http://schemas.microsoft.com/sharepoint/clientquery/2009"
+           elementFormDefault="qualified" xmlns:mstns="http://schemas.microsoft.com/sharepoint/clientquery/2009"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="GuidType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}\}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ObjectPathIdType">
+        <xs:restriction base="mstns:IdType"/>
+    </xs:simpleType>
+    <xs:simpleType name="IdType">
+        <xs:restriction base="xs:integer"/>
+    </xs:simpleType>
+    <xs:simpleType name="ActionIdType">
+        <xs:restriction base="mstns:IdType"/>
+    </xs:simpleType>
+    <xs:simpleType name="TypeIdGuidType">
+        <xs:restriction base="mstns:GuidType"/>
+    </xs:simpleType>
+    <xs:simpleType name="TypeFunctionTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Boolean"/>
+            <xs:enumeration value="Byte"/>
+            <xs:enumeration value="SByte"/>
+            <xs:enumeration value="Char"/>
+            <xs:enumeration value="Int16"/>
+            <xs:enumeration value="UInt16"/>
+            <xs:enumeration value="Int32"/>
+            <xs:enumeration value="UInt32"/>
+            <xs:enumeration value="Int64"/>
+            <xs:enumeration value="UInt64"/>
+            <xs:enumeration value="DateTime"/>
+            <xs:enumeration value="Single"/>
+            <xs:enumeration value="Double"/>
+            <xs:enumeration value="Decimal"/>
+            <xs:enumeration value="TimeSpan"/>
+            <xs:enumeration value="String"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PropertyNameType">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    <xs:simpleType name="StaticPropertyNameType">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    <xs:simpleType name="MethodNameType">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    <xs:simpleType name="StaticMethodNameType">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    <xs:simpleType name="MethodParameterTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Null"/>
+            <xs:enumeration value="Boolean"/>
+            <xs:enumeration value="Char"/>
+            <xs:enumeration value="Byte"/>
+            <xs:enumeration value="SByte"/>
+            <xs:enumeration value="Int16"/>
+            <xs:enumeration value="UInt16"/>
+            <xs:enumeration value="Int32"/>
+            <xs:enumeration value="UInt32"/>
+            <xs:enumeration value="Int64"/>
+            <xs:enumeration value="UInt64"/>
+            <xs:enumeration value="DateTime"/>
+            <xs:enumeration value="Single"/>
+            <xs:enumeration value="Double"/>
+            <xs:enumeration value="Decimal"/>
+            <xs:enumeration value="TimeSpan"/>
+            <xs:enumeration value="Guid"/>
+            <xs:enumeration value="String"/>
+            <xs:enumeration value="Base64Binary"/>
+            <xs:enumeration value="Dictionary"/>
+            <xs:enumeration value="Array"/>
+            <xs:enumeration value="Enum"/>
+            <xs:enumeration value="Number"/>
+            <xs:enumeration value="Unspecified"/>
+            <xs:enumeration value="Binary"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="MethodParameterType" mixed="true">
+        <xs:sequence>
+            <xs:element name="Property" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="mstns:MethodParameterType">
+                            <xs:attribute name="Name" type="mstns:PropertyNameType" use="required"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Object" type="mstns:MethodParameterType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Include" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:attribute name="href" use="required" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="ObjectPathId" type="mstns:ObjectPathIdType" use="optional"/>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="optional"/>
+        <xs:attribute name="Type" type="mstns:MethodParameterTypeType" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterNullType">
+        <xs:attribute name="Type" type="xs:string" use="required" fixed="Null"/>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterBooleanType">
+        <xs:simpleContent>
+            <xs:extension base="xs:boolean">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Boolean"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterCharType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Char"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterByteType">
+        <xs:simpleContent>
+            <xs:extension base="xs:unsignedByte">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Byte"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterSByteType">
+        <xs:simpleContent>
+            <xs:extension base="xs:byte">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="SByte"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterInt16Type">
+        <xs:simpleContent>
+            <xs:extension base="xs:short">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Int16"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterUInt16Type">
+        <xs:simpleContent>
+            <xs:extension base="xs:unsignedShort">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="UInt16"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterInt32Type">
+        <xs:simpleContent>
+            <xs:extension base="xs:int">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Int32"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterUInt32Type">
+        <xs:simpleContent>
+            <xs:extension base="xs:unsignedInt">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="UInt32"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterInt64Type">
+        <xs:simpleContent>
+            <xs:extension base="xs:long">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Int64"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterUInt64Type">
+        <xs:simpleContent>
+            <xs:extension base="xs:unsignedLong">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="UInt64"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterSingleType">
+        <xs:simpleContent>
+            <xs:extension base="xs:float">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Single"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterDoubleType">
+        <xs:simpleContent>
+            <xs:extension base="xs:double">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Double"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterDecimalType">
+        <xs:simpleContent>
+            <xs:extension base="xs:decimal">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Decimal"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterTimeSpanType">
+        <xs:simpleContent>
+            <xs:extension base="xs:duration">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="TimeSpan"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterDateTimeType">
+        <xs:simpleContent>
+            <xs:extension base="xs:dateTime">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="DateTime"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterGuidType">
+        <xs:simpleContent>
+            <xs:extension base="mstns:GuidType">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Guid"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterStringType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="String"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterByteArrayType">
+        <xs:simpleContent>
+            <xs:extension base="xs:base64Binary">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Base64Binary"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterDictionaryType">
+        <xs:sequence>
+            <xs:element name="Property" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="mstns:MethodParameterType">
+                            <xs:attribute name="Name" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Type" type="xs:string" use="required" fixed="Dictionary"/>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterNumberType">
+        <xs:simpleContent>
+            <xs:extension base="xs:decimal">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Number"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterObjectPathType">
+        <xs:attribute name="ObjectPathId" type="mstns:ObjectPathIdType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterBinaryType">
+        <xs:sequence>
+            <xs:element name="Include" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                    <xs:attribute name="href" use="required" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterValueObjectType">
+        <xs:sequence>
+            <xs:element name="Property" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="mstns:MethodParameterType">
+                            <xs:attribute name="Name" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterArrayType">
+        <xs:sequence>
+            <xs:element name="Object" minOccurs="0" maxOccurs="unbounded" type="mstns:MethodParameterType"/>
+        </xs:sequence>
+        <xs:attribute name="Type" type="xs:string" use="required" fixed="Array"/>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterEnumType">
+        <xs:simpleContent>
+            <xs:extension base="xs:integer">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Enum"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="MethodParameterUnspecifiedType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="Type" type="xs:string" use="required" fixed="Unspecified"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:simpleType name="VersionStringType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{1,8}\.[0-9]{1,8}\.[0-9]{1,8}\.[0-9]{1,8}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="RequestType">
+        <xs:sequence>
+            <xs:element name="Actions" type="mstns:ActionsType"/>
+            <xs:element name="ObjectPaths" type="mstns:ObjectPathsType"/>
+        </xs:sequence>
+        <xs:attribute name="AddExpandoFieldTypeSuffix" type="xs:boolean" use="optional"/>
+        <xs:attribute name="SchemaVersion" type="mstns:VersionStringType" use="required"/>
+        <xs:attribute name="LibraryVersion" type="mstns:VersionStringType" use="required"/>
+        <xs:attribute name="ApplicationName" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:maxLength value="128"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ObjectPathsType">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="Property" type="mstns:ObjectPathPropertyType"/>
+                <xs:element name="StaticProperty" type="mstns:ObjectPathStaticPropertyType"/>
+                <xs:element name="Method" type="mstns:ObjectPathMethodType"/>
+                <xs:element name="StaticMethod" type="mstns:ObjectPathStaticMethodType"/>
+                <xs:element name="Constructor" type="mstns:ObjectPathConstructorType"/>
+                <xs:element name="Identity" type="mstns:ObjectPathObjectIdentityNameType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ObjectPathPropertyType">
+        <xs:attribute name="Id" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="ParentId" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="Name" type="mstns:PropertyNameType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ObjectPathStaticPropertyType">
+        <xs:attribute name="Id" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="required"/>
+        <xs:attribute name="Name" type="mstns:StaticPropertyNameType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ObjectPathMethodType">
+        <xs:sequence>
+            <xs:element name="Parameters" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Parameter" type="mstns:MethodParameterType" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="ParentId" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="Name" type="mstns:MethodNameType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ObjectPathStaticMethodType">
+        <xs:sequence>
+            <xs:element name="Parameters" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Parameter" type="mstns:MethodParameterType" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="required"/>
+        <xs:attribute name="Name" type="mstns:StaticMethodNameType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ObjectPathConstructorType">
+        <xs:sequence>
+            <xs:element name="Parameters" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Parameter" type="mstns:MethodParameterType" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ObjectPathObjectIdentityNameType">
+        <xs:attribute name="Id" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="Name" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ActionsType">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="SetProperty" type="mstns:ActionSetPropertyType"/>
+                <xs:element name="SetStaticProperty" type="mstns:ActionSetStaticPropertyType"/>
+                <xs:element name="Method" type="mstns:ActionInvokeMethodType"/>
+                <xs:element name="StaticMethod" type="mstns:ActionInvokeStaticMethodType"/>
+                <xs:element name="ObjectPath" type="mstns:ActionInstantiateObjectPathType"/>
+                <xs:element name="ObjectIdentityQuery" type="mstns:ActionObjectIdentityQueryType"/>
+                <xs:element name="Query" type="mstns:ActionQueryType"/>
+                <xs:element name="ExceptionHandlingScope" type="mstns:ExceptionHandlingScopeType"/>
+                <xs:element name="ExceptionHandlingScopeSimple" type="mstns:ExceptionHandlingScopeSimpleType"/>
+                <xs:element name="ConditionalScope" type="mstns:ConditionalScopeType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:group name="ActionGroup">
+        <xs:choice>
+            <xs:element name="SetProperty" type="mstns:ActionSetPropertyType"/>
+            <xs:element name="SetStaticProperty" type="mstns:ActionSetStaticPropertyType"/>
+            <xs:element name="Method" type="mstns:ActionInvokeMethodType"/>
+            <xs:element name="StaticMethod" type="mstns:ActionInvokeStaticMethodType"/>
+            <xs:element name="ObjectPath" type="mstns:ActionInstantiateObjectPathType"/>
+            <xs:element name="ObjectIdentityQuery" type="mstns:ActionObjectIdentityQueryType"/>
+            <xs:element name="Query" type="mstns:ActionQueryType"/>
+            <xs:element name="ExceptionHandlingScope" type="mstns:ExceptionHandlingScopeType"/>
+            <xs:element name="ExceptionHandlingScopeSimple" type="mstns:ExceptionHandlingScopeSimpleType"/>
+            <xs:element name="ConditionalScope" type="mstns:ConditionalScopeType"/>
+        </xs:choice>
+    </xs:group>
+    <xs:complexType name="ActionSetPropertyType">
+        <xs:sequence>
+            <xs:element name="Parameter" type="mstns:MethodParameterType"/>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+        <xs:attribute name="ObjectPathId" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="Name" type="mstns:PropertyNameType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ActionSetStaticPropertyType">
+        <xs:sequence>
+            <xs:element name="Parameter" type="mstns:MethodParameterType"/>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="required"/>
+        <xs:attribute name="Name" type="mstns:StaticPropertyNameType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ActionInvokeMethodType">
+        <xs:sequence>
+            <xs:element name="Parameters" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Parameter" type="mstns:MethodParameterType" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+        <xs:attribute name="ObjectPathId" type="mstns:ObjectPathIdType" use="required"/>
+        <xs:attribute name="Name" type="mstns:MethodNameType" use="required"/>
+        <xs:attribute name="Version" type="xs:string" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="ActionInvokeStaticMethodType">
+        <xs:sequence>
+            <xs:element name="Parameters" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Parameter" type="mstns:MethodParameterType" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="required"/>
+        <xs:attribute name="Name" type="mstns:StaticMethodNameType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ActionInstantiateObjectPathType">
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+        <xs:attribute name="ObjectPathId" type="mstns:ObjectPathIdType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ActionObjectIdentityQueryType">
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+        <xs:attribute name="ObjectPathId" type="mstns:ObjectPathIdType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ActionQueryType">
+        <xs:sequence>
+            <xs:element name="Query" type="mstns:QueryType"/>
+            <xs:element name="ChildItemQuery" type="mstns:ChildItemQueryType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+        <xs:attribute name="ObjectPathId" type="mstns:ObjectPathIdType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="QueryType">
+        <xs:sequence>
+            <xs:element name="Properties">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Property" type="mstns:QueryPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="SelectAllProperties" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="ChildItemQueryType">
+        <xs:complexContent>
+            <xs:extension base="mstns:QueryType">
+                <xs:sequence>
+                    <xs:element name="QueryableExpression" type="mstns:ExpressionQueryableExpressionType" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="QueryPropertyType">
+        <xs:sequence>
+            <xs:element name="Query" type="mstns:QueryType" minOccurs="0"/>
+            <xs:element name="ChildItemQuery" type="mstns:ChildItemQueryType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="Name" type="mstns:PropertyNameType" use="required"/>
+        <xs:attribute name="ScalarProperty" type="xs:boolean" use="optional"/>
+        <xs:attribute name="SelectAll" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="ExceptionHandlingScopeSimpleType">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="SetProperty" type="mstns:ActionSetPropertyType"/>
+                <xs:element name="SetStaticProperty" type="mstns:ActionSetStaticPropertyType"/>
+                <xs:element name="Method" type="mstns:ActionInvokeMethodType"/>
+                <xs:element name="StaticMethod" type="mstns:ActionInvokeStaticMethodType"/>
+                <xs:element name="ObjectPath" type="mstns:ActionInstantiateObjectPathType"/>
+                <xs:element name="ObjectIdentityQuery" type="mstns:ActionObjectIdentityQueryType"/>
+                <xs:element name="Query" type="mstns:ActionQueryType"/>
+                <xs:element name="ExceptionHandlingScope" type="mstns:ExceptionHandlingScopeType"/>
+                <xs:element name="ExceptionHandlingScopeSimple" type="mstns:ExceptionHandlingScopeSimpleType"/>
+                <xs:element name="ConditionalScope" type="mstns:ConditionalScopeType"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ExceptionHandlingScopeType">
+        <xs:sequence>
+            <xs:element name="TryScope">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="SetProperty" type="mstns:ActionSetPropertyType"/>
+                            <xs:element name="SetStaticProperty" type="mstns:ActionSetStaticPropertyType"/>
+                            <xs:element name="Method" type="mstns:ActionInvokeMethodType"/>
+                            <xs:element name="StaticMethod" type="mstns:ActionInvokeStaticMethodType"/>
+                            <xs:element name="ObjectPath" type="mstns:ActionInstantiateObjectPathType"/>
+                            <xs:element name="ObjectIdentityQuery" type="mstns:ActionObjectIdentityQueryType"/>
+                            <xs:element name="Query" type="mstns:ActionQueryType"/>
+                            <xs:element name="ExceptionHandlingScope" type="mstns:ExceptionHandlingScopeType"/>
+                            <xs:element name="ExceptionHandlingScopeSimple" type="mstns:ExceptionHandlingScopeSimpleType"/>
+                            <xs:element name="ConditionalScope" type="mstns:ConditionalScopeType"/>
+                        </xs:choice>
+                    </xs:sequence>
+                    <xs:attribute name="Id" type="mstns:IdType" use="required"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="CatchScope" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="SetProperty" type="mstns:ActionSetPropertyType"/>
+                            <xs:element name="SetStaticProperty" type="mstns:ActionSetStaticPropertyType"/>
+                            <xs:element name="Method" type="mstns:ActionInvokeMethodType"/>
+                            <xs:element name="StaticMethod" type="mstns:ActionInvokeStaticMethodType"/>
+                            <xs:element name="ObjectPath" type="mstns:ActionInstantiateObjectPathType"/>
+                            <xs:element name="ObjectIdentityQuery" type="mstns:ActionObjectIdentityQueryType"/>
+                            <xs:element name="Query" type="mstns:ActionQueryType"/>
+                            <xs:element name="ExceptionHandlingScope" type="mstns:ExceptionHandlingScopeType"/>
+                            <xs:element name="ExceptionHandlingScopeSimple" type="mstns:ExceptionHandlingScopeSimpleType"/>
+                            <xs:element name="ConditionalScope" type="mstns:ConditionalScopeType"/>
+                        </xs:choice>
+                    </xs:sequence>
+                    <xs:attribute name="Id" type="mstns:IdType" use="required"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="FinallyScope" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="SetProperty" type="mstns:ActionSetPropertyType"/>
+                            <xs:element name="SetStaticProperty" type="mstns:ActionSetStaticPropertyType"/>
+                            <xs:element name="Method" type="mstns:ActionInvokeMethodType"/>
+                            <xs:element name="StaticMethod" type="mstns:ActionInvokeStaticMethodType"/>
+                            <xs:element name="ObjectPath" type="mstns:ActionInstantiateObjectPathType"/>
+                            <xs:element name="ObjectIdentityQuery" type="mstns:ActionObjectIdentityQueryType"/>
+                            <xs:element name="Query" type="mstns:ActionQueryType"/>
+                            <xs:element name="ExceptionHandlingScope" type="mstns:ExceptionHandlingScopeType"/>
+                            <xs:element name="ExceptionHandlingScopeSimple" type="mstns:ExceptionHandlingScopeSimpleType"/>
+                            <xs:element name="ConditionalScope" type="mstns:ConditionalScopeType"/>
+                        </xs:choice>
+                    </xs:sequence>
+                    <xs:attribute name="Id" type="mstns:IdType" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ConditionalScopeType">
+        <xs:sequence>
+            <xs:element name="Test">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="Body" type="mstns:ExpressionType"/>
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="IfTrueScope" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="SetProperty" type="mstns:ActionSetPropertyType"/>
+                            <xs:element name="SetStaticProperty" type="mstns:ActionSetStaticPropertyType"/>
+                            <xs:element name="Method" type="mstns:ActionInvokeMethodType"/>
+                            <xs:element name="StaticMethod" type="mstns:ActionInvokeStaticMethodType"/>
+                            <xs:element name="ObjectPath" type="mstns:ActionInstantiateObjectPathType"/>
+                            <xs:element name="ObjectIdentityQuery" type="mstns:ActionObjectIdentityQueryType"/>
+                            <xs:element name="Query" type="mstns:ActionQueryType"/>
+                            <xs:element name="ExceptionHandlingScope" type="mstns:ExceptionHandlingScopeType"/>
+                            <xs:element name="ExceptionHandlingScopeSimple" type="mstns:ExceptionHandlingScopeSimpleType"/>
+                            <xs:element name="ConditionalScope" type="mstns:ConditionalScopeType"/>
+                        </xs:choice>
+                    </xs:sequence>
+                    <xs:attribute name="Id" type="mstns:IdType" use="required"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="IfFalseScope" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="SetProperty" type="mstns:ActionSetPropertyType"/>
+                            <xs:element name="SetStaticProperty" type="mstns:ActionSetStaticPropertyType"/>
+                            <xs:element name="Method" type="mstns:ActionInvokeMethodType"/>
+                            <xs:element name="StaticMethod" type="mstns:ActionInvokeStaticMethodType"/>
+                            <xs:element name="ObjectPath" type="mstns:ActionInstantiateObjectPathType"/>
+                            <xs:element name="ObjectIdentityQuery" type="mstns:ActionObjectIdentityQueryType"/>
+                            <xs:element name="Query" type="mstns:ActionQueryType"/>
+                            <xs:element name="ExceptionHandlingScope" type="mstns:ExceptionHandlingScopeType"/>
+                            <xs:element name="ExceptionHandlingScopeSimple" type="mstns:ExceptionHandlingScopeSimpleType"/>
+                            <xs:element name="ConditionalScope" type="mstns:ConditionalScopeType"/>
+                        </xs:choice>
+                    </xs:sequence>
+                    <xs:attribute name="Id" type="mstns:IdType" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Id" type="mstns:ActionIdType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ExpressionType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NOT" type="mstns:ExpressionType"/>
+                <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+                <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+                <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+                <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+                <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+                <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+                <xs:element name="ExpressionTypeIs" type="mstns:ExpressionTypeIsExpressionType"/>
+                <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:group name="ExpressionGroup">
+        <xs:choice>
+            <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+            <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+            <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+            <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+            <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+            <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+            <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+            <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+            <xs:element name="NOT" type="mstns:ExpressionType"/>
+            <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+            <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+            <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+            <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+            <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+            <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+            <xs:element name="ExpressionTypeIs" type="mstns:ExpressionTypeIsExpressionType"/>
+            <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+        </xs:choice>
+    </xs:group>
+    <xs:complexType name="ExpressionLeftRightOperandExpressionType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NOT" type="mstns:ExpressionType"/>
+                <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+                <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+                <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+                <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+                <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+                <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+                <xs:element name="ExpressionTypeIs" type="mstns:ExpressionTypeIsExpressionType"/>
+                <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+            </xs:choice>
+            <xs:choice>
+                <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NOT" type="mstns:ExpressionType"/>
+                <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+                <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+                <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+                <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+                <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+                <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+                <xs:element name="ExpressionTypeIs" type="mstns:ExpressionTypeIsExpressionType"/>
+                <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ExpressionPropertyExpressionType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NOT" type="mstns:ExpressionType"/>
+                <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+                <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+                <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+                <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+                <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+                <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+                <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="Name" type="mstns:PropertyNameType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ExpressionStaticPropertyExpressionType">
+        <xs:sequence/>
+        <xs:attribute name="Name" type="mstns:StaticPropertyNameType" use="required"/>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ExpressionMethodExpressionType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NOT" type="mstns:ExpressionType"/>
+                <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+                <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+                <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+                <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+                <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+                <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+                <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+            </xs:choice>
+            <xs:element name="Parameters" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="NOT" type="mstns:ExpressionType"/>
+                            <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+                            <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+                            <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+                            <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+                            <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+                            <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+                            <xs:element name="ExpressionTypeIs" type="mstns:ExpressionTypeIsExpressionType"/>
+                            <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+                        </xs:choice>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Name" type="mstns:MethodNameType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ExpressionStaticMethodExpressionType">
+        <xs:sequence>
+            <xs:element name="Parameters" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                            <xs:element name="NOT" type="mstns:ExpressionType"/>
+                            <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+                            <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+                            <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+                            <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+                            <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+                            <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+                            <xs:element name="ExpressionTypeIs" type="mstns:ExpressionTypeIsExpressionType"/>
+                            <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+                        </xs:choice>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Name" type="mstns:StaticMethodNameType" use="required"/>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="ExpressionConvertExpressionType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NOT" type="mstns:ExpressionType"/>
+                <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+                <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+                <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+                <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+                <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+                <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+                <xs:element name="ExpressionTypeIs" type="mstns:ExpressionTypeIsExpressionType"/>
+                <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="Type" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Boolean"/>
+                    <xs:enumeration value="Byte"/>
+                    <xs:enumeration value="SByte"/>
+                    <xs:enumeration value="Char"/>
+                    <xs:enumeration value="Int16"/>
+                    <xs:enumeration value="UInt16"/>
+                    <xs:enumeration value="Int32"/>
+                    <xs:enumeration value="UInt32"/>
+                    <xs:enumeration value="Int64"/>
+                    <xs:enumeration value="UInt64"/>
+                    <xs:enumeration value="DateTime"/>
+                    <xs:enumeration value="Single"/>
+                    <xs:enumeration value="Double"/>
+                    <xs:enumeration value="Decimal"/>
+                    <xs:enumeration value="TimeSpan"/>
+                    <xs:enumeration value="String"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="TypeId" use="optional" type="mstns:TypeIdGuidType"/>
+    </xs:complexType>
+    <xs:complexType name="ExpressionTypeIsExpressionType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="GT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LT" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="EQ" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="GE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="LE" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="AND" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="OR" type="mstns:ExpressionLeftRightOperandExpressionType"/>
+                <xs:element name="NOT" type="mstns:ExpressionType"/>
+                <xs:element name="ExpressionMethod" type="mstns:ExpressionMethodExpressionType"/>
+                <xs:element name="ExpressionStaticMethod" type="mstns:ExpressionStaticMethodExpressionType"/>
+                <xs:element name="ExpressionProperty" type="mstns:ExpressionPropertyExpressionType"/>
+                <xs:element name="ExpressionStaticProperty" type="mstns:ExpressionStaticPropertyExpressionType"/>
+                <xs:element name="ExpressionParameter" type="mstns:ExpressionParameterExpressionType"/>
+                <xs:element name="ExpressionConvert" type="mstns:ExpressionConvertExpressionType"/>
+                <xs:element name="ExpressionTypeIs" type="mstns:ExpressionTypeIsExpressionType"/>
+                <xs:element name="ExpressionConstant" type="mstns:MethodParameterType"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="Type" use="optional" type="mstns:TypeFunctionTypeType"/>
+        <xs:attribute name="TypeId" use="optional" type="mstns:TypeIdGuidType"/>
+    </xs:complexType>
+    <xs:complexType name="ExpressionParameterExpressionType">
+        <xs:attribute name="Name" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:group name="ExpressionQueryableExpressionGroup">
+        <xs:choice>
+            <xs:element name="Take" type="mstns:ExpressionQueryableTakeType"/>
+            <xs:element name="OfType" type="mstns:ExpressionQueryableOfTypeType"/>
+            <xs:element name="Where" type="mstns:ExpressionQueryableWhereType"/>
+            <xs:element name="OrderBy" type="mstns:ExpressionQueryableWhereType"/>
+            <xs:element name="OrderByDescending" type="mstns:ExpressionQueryableWhereType"/>
+            <xs:element name="ThenBy" type="mstns:ExpressionQueryableWhereType"/>
+            <xs:element name="ThenByDescending" type="mstns:ExpressionQueryableWhereType"/>
+            <xs:element name="QueryableObject">
+                <xs:complexType/>
+            </xs:element>
+        </xs:choice>
+    </xs:group>
+    <xs:complexType name="ExpressionQueryableExpressionType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="Take" type="mstns:ExpressionQueryableTakeType"/>
+                <xs:element name="OfType" type="mstns:ExpressionQueryableOfTypeType"/>
+                <xs:element name="Where" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="OrderBy" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="OrderByDescending" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="ThenBy" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="ThenByDescending" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="QueryableObject">
+                    <xs:complexType/>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ExpressionQueryableTakeType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="Take" type="mstns:ExpressionQueryableTakeType"/>
+                <xs:element name="OfType" type="mstns:ExpressionQueryableOfTypeType"/>
+                <xs:element name="Where" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="OrderBy" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="OrderByDescending" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="ThenBy" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="ThenByDescending" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="QueryableObject">
+                    <xs:complexType/>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="Count" type="xs:nonNegativeInteger"/>
+    </xs:complexType>
+    <xs:complexType name="ExpressionQueryableOfTypeType">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="Take" type="mstns:ExpressionQueryableTakeType"/>
+                <xs:element name="OfType" type="mstns:ExpressionQueryableOfTypeType"/>
+                <xs:element name="Where" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="OrderBy" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="OrderByDescending" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="ThenBy" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="ThenByDescending" type="mstns:ExpressionQueryableWhereType"/>
+                <xs:element name="QueryableObject">
+                    <xs:complexType/>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="Type" type="mstns:TypeFunctionTypeType" use="optional"/>
+        <xs:attribute name="TypeId" type="mstns:TypeIdGuidType" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="ExpressionQueryableWhereType">
+        <xs:sequence>
+            <xs:element name="Test">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="Body" type="mstns:ExpressionType"/>
+                        <xs:element name="Parameters">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="Parameter">
+                                        <xs:complexType>
+                                            <xs:attribute name="Name" type="xs:string"/>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:all>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Object" type="mstns:ExpressionQueryableExpressionType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="Request" type="mstns:RequestType"/>
+</xs:schema>

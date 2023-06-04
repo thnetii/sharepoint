@@ -12,7 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\THNETII.SharePoint.IdentityModel\THNETII.SharePoint.IdentityModel.csproj" />
+    <ProjectReference Include="..\THNETII.SharePoint.AzureAcs.Protocol\THNETII.SharePoint.AzureAcs.Protocol.csproj" />
+    <ProjectReference Include="..\THNETII.SharePoint.BearerAuthorization\THNETII.SharePoint.BearerAuthorization.csproj" />
     <ProjectReference Include="..\..\submodules\thnetii\msal-extensions\src\THNETII.Msal.PowerShell\THNETII.Msal.PowerShell.csproj" />
   </ItemGroup>
 

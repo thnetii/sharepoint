@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,6 +21,9 @@ namespace THNETII.SharePoint.AzureAcs.Protocol
             Scopes = response.Scope?.Split(' ');
             TokenType = response.TokenType;
             ValidatedToken = validatedToken;
+
+            AuthorizationHeader = new AuthenticationHeaderValue(
+                TokenType, AccessTokenString);
         }
 
         public string AccessTokenString { get; }
@@ -30,5 +34,7 @@ namespace THNETII.SharePoint.AzureAcs.Protocol
         public IEnumerable<string>? Scopes { get; }
         public string TokenType { get; }
         public SecurityToken? ValidatedToken { get; }
+
+        public AuthenticationHeaderValue AuthorizationHeader { get; }
     }
 }
