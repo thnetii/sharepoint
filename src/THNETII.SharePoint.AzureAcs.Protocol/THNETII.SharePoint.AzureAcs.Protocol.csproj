@@ -1,14 +1,20 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;netcoreapp3.1;netstandard2.0;net45;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net7;net452;net461</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="
-    !($([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework' AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt;= '4.5')
+    !($([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework' AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; '4.6')
     ">
     <DefineConstants>$(DefineConstants);SYSTEM_DATETIMEOFFSET_UNIXTIME_API</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup Condition="
+    $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETFramework' AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; '4.6'
+    ">
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

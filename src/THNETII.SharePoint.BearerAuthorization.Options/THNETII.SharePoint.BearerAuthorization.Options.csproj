@@ -1,12 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.1;netcoreapp3.1;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net7;netstandard2.1;netstandard2.0</TargetFrameworks>
     <TargetFrameworks Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">$(TargetFrameworks);net461</TargetFrameworks>
     <RootNamespace>THNETII.SharePoint.BearerAuthorization</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition="&#xD;&#xA;    ( $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETStandard'  AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= '2.1') OR&#xD;&#xA;    ( $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETCoreApp'   AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= '3.0')&#xD;&#xA;                 ">
+  <PropertyGroup Condition="
+      ( $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETStandard'  AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= '2.1') OR
+      ( $([MSBuild]::GetTargetFrameworkIdentifier('$(TargetFramework)')) == '.NETCoreApp'   AND $([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= '3.0')
+      ">
     <DefineConstants>$(DefineConstants);CSHARP_LANG_FEATURE_RANGE_INDEX;NETSTANDARD_API_STRING_STRINGCOMPARISON</DefineConstants>
   </PropertyGroup>
 
